@@ -18,12 +18,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Please enter a valid 5-digit ZIP code.' });
   }
 
+  // Check the key is actually loaded
+  const apiKey = process.env.BREVO_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Server config error: API key not set in Vercel environment variables.' });
+  }
+
   try {
     const response = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'api-key': process.env.BREVO_API_KEY   // ← secure, never visible to users
+        'api-key': apiKey
       },
       body: JSON.stringify({
         email: email,
@@ -41,8 +47,13 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true });
     }
 
+    // Return full Brevo error so we can see exactly what went wrong
     const data = await response.json();
-    throw new Error(data.message || 'Brevo error');
+    console.error('Brevo rejected:', response.status, JSON.stringify(data));
+    return res.status(500).json({
+      error: data.message || 'Brevo error',
+      detail: JSON.stringify(data)
+    });
 
   } catch (err) {
     console.error('Brevo subscribe error:', err.message);
