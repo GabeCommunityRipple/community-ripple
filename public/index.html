@@ -784,17 +784,20 @@
   <div class="signup-box">
     <div class="section-eyebrow">Get notified</div>
     <h2>Be the first to know when a Ripple starts near you</h2>
-    <p>Enter your email and ZIP code. We'll alert you the moment a neighbor starts a Ripple for a service you might need.</p>
+    <p>Enter your details below. We'll alert you the moment a neighbor starts a Ripple for a service you might need.</p>
 
     <div id="signup-form-wrap">
       <div class="email-form">
         <input type="email" id="email-input" placeholder="your@email.com">
         <button onclick="handleSignup()">Notify me →</button>
       </div>
+      <div style="margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;">
+        <input type="text" id="address-input" placeholder="Your home address (e.g. 123 Main St, Apex, NC 27502)" style="width:100%;border:2px solid #dde6f7;border-radius:12px;padding:13px 18px;font-family:'Nunito Sans',sans-serif;font-size:0.95rem;background:white;outline:none;color:#1a2540;">
+      </div>
       <div class="zip-form" style="margin-top:10px;">
         <input type="text" id="zip-input" placeholder="ZIP code" maxlength="5">
       </div>
-      <p class="signup-note">No spam. Just Ripples. Unsubscribe any time.</p>
+      <p class="signup-note">Your address matches you with nearby Ripples only. Never shared publicly.</p>
     </div>
 
     <div class="success-message" id="success-msg">
@@ -854,31 +857,26 @@
     if (e.key === 'Enter') handleSearch();
   });
 
-  // Signup handler — connected to Brevo
+  // Signup handler — connected to Brevo + Supabase
   async function handleSignup() {
     const email = document.getElementById('email-input').value.trim();
     const zip = document.getElementById('zip-input').value.trim();
+    const address = document.getElementById('address-input').value.trim();
     const service = document.getElementById('service-input').value.trim();
 
-    if (!email || !zip) {
-      showFormError('Please enter your email and ZIP code.');
-      return;
-    }
-    if (!/^\d{5}$/.test(zip)) {
-      showFormError('Please enter a valid 5-digit ZIP code.');
-      return;
-    }
+    if (!email) { showFormError('Please enter your email.'); return; }
+    if (!address) { showFormError('Please enter your home address.'); return; }
+    if (!zip || !/^\d{5}$/.test(zip)) { showFormError('Please enter a valid 5-digit ZIP code.'); return; }
 
     const btn = document.querySelector('.email-form button');
     btn.textContent = 'Joining…';
     btn.disabled = true;
 
     try {
-      // Calls our secure Vercel function — API key never exposed to browser
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, zip, service })
+        body: JSON.stringify({ email, zip, address, service })
       });
 
       const data = await response.json();
