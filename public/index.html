@@ -787,12 +787,12 @@
     <p>Enter your details below. We'll alert you the moment a neighbor starts a Ripple for a service you might need.</p>
 
     <div id="signup-form-wrap">
-      <div class="email-form">
-        <input type="email" id="email-input" placeholder="your@email.com">
-        <button onclick="handleSignup()">Notify me →</button>
-      </div>
-      <div style="margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;">
+      <div style="max-width:440px;margin:0 auto 10px;">
+        <input type="email" id="email-input" placeholder="your@email.com" style="width:100%;border:2px solid #dde6f7;border-radius:12px;padding:13px 18px;font-family:'Nunito Sans',sans-serif;font-size:0.95rem;background:white;outline:none;color:#1a2540;margin-bottom:10px;">
         <input type="text" id="address-input" placeholder="Your home address (e.g. 123 Main St, Apex, NC 27502)" style="width:100%;border:2px solid #dde6f7;border-radius:12px;padding:13px 18px;font-family:'Nunito Sans',sans-serif;font-size:0.95rem;background:white;outline:none;color:#1a2540;">
+      </div>
+      <div style="max-width:440px;margin:10px auto 0;">
+        <button id="signup-btn" onclick="handleSignup()" style="width:100%;background:#5B8DD9;color:white;border:none;border-radius:12px;padding:13px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;transition:background 0.2s;">Notify me →</button>
       </div>
       <p class="signup-note">Your address matches you with nearby Ripples only. Never shared publicly.</p>
     </div>
@@ -831,14 +831,31 @@
   <button class="toast-join" onclick="dismissToast()">Join →</button>
 </div>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiN1tOJuN8stsCU1YirTSvh6uKyxOHIAM&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
+  // Initialize Google Places Autocomplete
+  function initAutocomplete() {
+    const input = document.getElementById('address-input');
+    if (!input) return;
+    const autocomplete = new google.maps.places.Autocomplete(input, {
+      types: ['address'],
+      componentRestrictions: { country: 'us' }
+    });
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      if (place.formatted_address) {
+        input.value = place.formatted_address;
+      }
+    });
+  }
+
   // Hint chips
   function fillSearch(val) {
     document.getElementById('service-input').value = val;
     document.getElementById('service-input').focus();
   }
 
-  // Search handler (MVP: just scroll to signup)
+  // Search handler
   function handleSearch() {
     const val = document.getElementById('service-input').value.trim();
     if (!val) {
@@ -857,14 +874,13 @@
   // Signup handler — connected to Brevo + Supabase
   async function handleSignup() {
     const email = document.getElementById('email-input').value.trim();
-    const zip = document.getElementById('zip-input').value.trim();
     const address = document.getElementById('address-input').value.trim();
     const service = document.getElementById('service-input').value.trim();
 
     if (!email) { showFormError('Please enter your email.'); return; }
     if (!address) { showFormError('Please enter your home address.'); return; }
 
-    const btn = document.querySelector('.email-form button');
+    const btn = document.getElementById('signup-btn');
     btn.textContent = 'Joining…';
     btn.disabled = true;
 
@@ -872,7 +888,7 @@
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, zip, address, service })
+        body: JSON.stringify({ email, address, service })
       });
 
       const data = await response.json();
