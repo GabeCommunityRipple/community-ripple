@@ -1,62 +1,78 @@
-// api/subscribe.js
-// Vercel serverless function — runs on the server, never exposed to the browser
-// Your Brevo API key is stored safely in Vercel environment variables
-
 export default async function handler(req, res) {
-  // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { email, zip, service } = req.body;
+  const { email, address, service } = req.body;
 
-  // Basic validation
-  if (!email || !zip) {
-    return res.status(400).json({ error: 'Email and ZIP code are required.' });
-  }
-  if (!/^\d{5}$/.test(zip)) {
-    return res.status(400).json({ error: 'Please enter a valid 5-digit ZIP code.' });
-  }
+  if (!email) return res.status(400).json({ error: 'Email is required.' });
+  if (!address) return res.status(400).json({ error: 'Address is required.' });
 
-  // Check the key is actually loaded
-  const apiKey = process.env.BREVO_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Server config error: API key not set in Vercel environment variables.' });
-  }
+  const brevoKey = process.env.BREVO_API_KEY;
+  const googleKey = process.env.GOOGLE_MAPS_API_KEY;
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+  if (!brevoKey) return res.status(500).json({ error: 'Brevo API key not configured.' });
+  if (!googleKey) return res.status(500).json({ error: 'Google Maps API key not configured.' });
 
   try {
-    const response = await fetch('https://api.brevo.com/v3/contacts', {
+    // 1. Convert address to lat/lng
+    const geoRes = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${googleKey}`);
+    const geoData = await geoRes.json();
+
+    if (geoData.status !== 'OK' || !geoData.results?.[0]) {
+      return res.status(400).json({ error: 'Address not found. Please check and try again.' });
+    }
+
+    const { lat, lng } = geoData.results[0].geometry.location;
+    const formattedAddress = geoData.results[0].formatted_address;
+
+    // Extract ZIP from Google result
+    const zipComponent = geoData.results[0].address_components.find(c => c.types.includes('postal_code'));
+    const zip = zipComponent?.short_name || '';
+
+    // 2. Save to Brevo
+    const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': apiKey
-      },
+      headers: { 'Content-Type': 'application/json', 'api-key': brevoKey },
       body: JSON.stringify({
-        email: email,
+        email,
         listIds: [2],
         updateEnabled: true,
         attributes: {
           ZIP_CODE: zip,
-          SERVICE_INTEREST: service || 'Not specified'
+          SERVICE_INTEREST: service || 'Not specified',
+          ADDRESS: formattedAddress,
+          LAT: lat.toString(),
+          LNG: lng.toString()
         }
       })
     });
 
-    // 201 = new contact created, 204 = existing contact updated
-    if (response.status === 201 || response.status === 204) {
-      return res.status(200).json({ success: true });
+    if (brevoRes.status !== 201 && brevoRes.status !== 204) {
+      const brevoData = await brevoRes.json();
+      throw new Error(brevoData.message || 'Brevo error');
     }
 
-    // Return full Brevo error so we can see exactly what went wrong
-    const data = await response.json();
-    console.error('Brevo rejected:', response.status, JSON.stringify(data));
-    return res.status(500).json({
-      error: data.message || 'Brevo error',
-      detail: JSON.stringify(data)
-    });
+    // 3. Save to Supabase
+    if (supabaseUrl && supabaseKey) {
+      await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
+        method: 'POST',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify({ email, zip, lat, lng, service_interest: service || 'Not specified' })
+      });
+    }
+
+    return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress });
 
   } catch (err) {
-    console.error('Brevo subscribe error:', err.message);
+    console.error('Subscribe error:', err.message);
     return res.status(500).json({ error: err.message });
   }
 }
