@@ -1,9 +1,8 @@
-// ripple.js v3 — uses Supabase REST API directly, no npm package needed
+// ripple.js v4 — creates or joins a ripple, then triggers neighbor notifications
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
 
-// Helper to call Supabase REST API
 async function db(table, options = {}) {
   const { method = 'GET', filter = '', body = null, prefer = '' } = options;
   const url = `${SUPABASE_URL}/rest/v1/${table}${filter}`;
@@ -24,7 +23,6 @@ async function db(table, options = {}) {
   return null;
 }
 
-// Haversine formula — straight line distance between two coordinates
 function distanceMiles(lat1, lng1, lat2, lng2) {
   const R = 3958.8;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -41,26 +39,26 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { email, zip, service, lat, lng } = req.body;
+  const { email, service, lat, lng, zip } = req.body;
 
   if (!email || !lat || !lng || !service) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
   try {
-    // 1. Get ripple radius from settings
+    // 1. Get ripple radius
     const settings = await db('settings', { filter: '?key=eq.ripple_radius_miles' });
     const radiusMiles = parseFloat(settings?.[0]?.value || '5');
 
-    // 2. Save or update subscriber
+    // 2. Save subscriber
     const subscribers = await db('subscribers', {
       method: 'POST',
-      body: { email, zip, lat, lng, service_interest: service },
+      body: { email, zip, lat, lng },
       prefer: 'return=representation,resolution=merge-duplicates'
     });
     const subscriber = subscribers?.[0];
 
-    // 3. Find open ripples nearby for same service
+    // 3. Find open ripple nearby for same service
     const openRipples = await db('ripples', {
       filter: `?status=eq.open&service_type=ilike.*${encodeURIComponent(service)}*`
     });
@@ -76,7 +74,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // 4. Join existing or start new ripple
+    // 4. Join existing or create new ripple
     if (matchedRipple) {
       await db('ripple_members', {
         method: 'POST',
@@ -86,23 +84,43 @@ export default async function handler(req, res) {
         method: 'PATCH',
         body: { member_count: matchedRipple.member_count + 1 }
       });
+
       return res.status(200).json({
         status: 'joined',
         ripple_id: matchedRipple.id,
         member_count: matchedRipple.member_count + 1,
         message: `You joined a Ripple with ${matchedRipple.member_count + 1} neighbors!`
       });
+
     } else {
+      // Create new ripple
       const newRipples = await db('ripples', {
         method: 'POST',
         body: { service_type: service, lat, lng, zip, member_count: 1 },
         prefer: 'return=representation'
       });
       const newRipple = newRipples?.[0];
+
       await db('ripple_members', {
         method: 'POST',
         body: { ripple_id: newRipple?.id, subscriber_id: subscriber?.id }
       });
+
+      // 5. Trigger neighbor notifications
+      const host = req.headers.host;
+      const protocol = host.includes('localhost') ? 'http' : 'https';
+      fetch(`${protocol}://${host}/api/notify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ripple_id: newRipple?.id,
+          service_type: service,
+          lat,
+          lng,
+          started_by: email.split('@')[0]
+        })
+      });
+
       return res.status(200).json({
         status: 'created',
         ripple_id: newRipple?.id,
