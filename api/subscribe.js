@@ -53,37 +53,45 @@ export default async function handler(req, res) {
       throw new Error(brevoData.message || 'Brevo error');
     }
 
-    // 3. Save to Supabase subscribers
-    const subRes = await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
+    // 3. Save to Supabase — upsert and fetch back by email
+    await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
       method: 'POST',
       headers: {
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,
         'Content-Type': 'application/json',
-        'Prefer': 'return=representation,resolution=merge-duplicates'
+        'Prefer': 'resolution=merge-duplicates'
       },
       body: JSON.stringify({ email, zip, lat, lng, service_interest: service || 'Not specified' })
     });
-    const subData = await subRes.json();
-    const subscriber = Array.isArray(subData) ? subData[0] : subData;
 
-    // 4. Ripple matching — find or create ripple
+    // Fetch subscriber by email to get their ID
+    const lookupRes = await fetch(`${supabaseUrl}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}&select=*`, {
+      headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
+    });
+    const lookupData = await lookupRes.json();
+    const subscriber = lookupData?.[0];
+
+    console.log('Subscriber found:', subscriber?.id, subscriber?.email);
+
+    // 4. Ripple matching
     if (service && subscriber?.id) {
-
-      // Get radius setting
       const settingsRes = await fetch(`${supabaseUrl}/rest/v1/settings?key=eq.ripple_radius_miles`, {
         headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
       });
       const settings = await settingsRes.json();
       const radiusMiles = parseFloat(settings?.[0]?.value || '5');
 
-      // Find open ripples for same service
-      const ripplesRes = await fetch(`${supabaseUrl}/rest/v1/ripples?status=eq.open`, {
+      console.log('Radius miles:', radiusMiles);
+
+      // Find open ripples
+      const ripplesRes = await fetch(`${supabaseUrl}/rest/v1/ripples?status=eq.open&select=*`, {
         headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
       });
       const openRipples = await ripplesRes.json();
 
-      // Filter by distance and service
+      console.log('Open ripples found:', openRipples?.length);
+
       let matchedRipple = null;
       if (Array.isArray(openRipples)) {
         for (const ripple of openRipples) {
@@ -92,6 +100,7 @@ export default async function handler(req, res) {
                               service.toLowerCase().includes(ripple.service_type?.toLowerCase());
           if (!sameService) continue;
           const dist = haversine(lat, lng, ripple.lat, ripple.lng);
+          console.log(`Ripple ${ripple.id} distance: ${dist} miles`);
           if (dist <= radiusMiles) {
             matchedRipple = ripple;
             break;
@@ -100,7 +109,7 @@ export default async function handler(req, res) {
       }
 
       if (matchedRipple) {
-        // Join existing ripple
+        console.log('Joining existing ripple:', matchedRipple.id);
         await fetch(`${supabaseUrl}/rest/v1/ripple_members`, {
           method: 'POST',
           headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`, 'Content-Type': 'application/json' },
@@ -113,7 +122,7 @@ export default async function handler(req, res) {
         });
 
       } else {
-        // Create new ripple
+        console.log('Creating new ripple for service:', service);
         const newRippleRes = await fetch(`${supabaseUrl}/rest/v1/ripples`, {
           method: 'POST',
           headers: {
@@ -125,10 +134,10 @@ export default async function handler(req, res) {
           body: JSON.stringify({ service_type: service, lat, lng, zip, member_count: 1, status: 'open' })
         });
         const newRippleData = await newRippleRes.json();
+        console.log('New ripple response:', JSON.stringify(newRippleData));
         const newRipple = Array.isArray(newRippleData) ? newRippleData[0] : newRippleData;
 
         if (newRipple?.id) {
-          // Add to ripple_members
           await fetch(`${supabaseUrl}/rest/v1/ripple_members`, {
             method: 'POST',
             headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`, 'Content-Type': 'application/json' },
@@ -140,11 +149,12 @@ export default async function handler(req, res) {
             headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
           });
           const allSubs = await allSubsRes.json();
-
           const nearby = Array.isArray(allSubs) ? allSubs.filter(sub => {
             if (sub.email === email || !sub.lat || !sub.lng) return false;
             return haversine(lat, lng, sub.lat, sub.lng) <= radiusMiles;
           }) : [];
+
+          console.log('Nearby subscribers to notify:', nearby.length);
 
           for (const sub of nearby) {
             await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -163,6 +173,8 @@ export default async function handler(req, res) {
           }
         }
       }
+    } else {
+      console.log('Skipping ripple — service:', service, 'subscriber id:', subscriber?.id);
     }
 
     return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress });
