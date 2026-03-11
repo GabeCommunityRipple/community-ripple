@@ -27,8 +27,6 @@ export default async function handler(req, res) {
 
     const { lat, lng } = geoData.results[0].geometry.location;
     const formattedAddress = geoData.results[0].formatted_address;
-
-    // Extract ZIP from Google result
     const zipComponent = geoData.results[0].address_components.find(c => c.types.includes('postal_code'));
     const zip = zipComponent?.short_name || '';
 
@@ -55,21 +53,35 @@ export default async function handler(req, res) {
       throw new Error(brevoData.message || 'Brevo error');
     }
 
-    // 3. Save to Supabase
-    if (supabaseUrl && supabaseKey) {
-      await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
+    // 3. Save to Supabase subscribers
+    await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
+      method: 'POST',
+      headers: {
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({ email, zip, lat, lng, service_interest: service || 'Not specified' })
+    });
+
+    // 4. Trigger ripple matching — create or join a ripple
+    if (service) {
+      const host = req.headers.host;
+      const protocol = host.includes('localhost') ? 'http' : 'https';
+      fetch(`${protocol}://${host}/api/ripple`, {
         method: 'POST',
-        headers: {
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'resolution=merge-duplicates'
-        },
-        body: JSON.stringify({ email, zip, lat, lng, service_interest: service || 'Not specified' })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, service, lat, lng, zip })
       });
     }
 
-    return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress });
+    return res.status(200).json({
+      success: true,
+      lat,
+      lng,
+      formatted_address: formattedAddress
+    });
 
   } catch (err) {
     console.error('Subscribe error:', err.message);
