@@ -794,9 +794,6 @@
       <div style="margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;">
         <input type="text" id="address-input" placeholder="Your home address (e.g. 123 Main St, Apex, NC 27502)" style="width:100%;border:2px solid #dde6f7;border-radius:12px;padding:13px 18px;font-family:'Nunito Sans',sans-serif;font-size:0.95rem;background:white;outline:none;color:#1a2540;">
       </div>
-      <div class="zip-form" style="margin-top:10px;">
-        <input type="text" id="zip-input" placeholder="ZIP code" maxlength="5">
-      </div>
       <p class="signup-note">Your address matches you with nearby Ripples only. Never shared publicly.</p>
     </div>
 
@@ -866,7 +863,6 @@
 
     if (!email) { showFormError('Please enter your email.'); return; }
     if (!address) { showFormError('Please enter your home address.'); return; }
-    if (!zip || !/^\d{5}$/.test(zip)) { showFormError('Please enter a valid 5-digit ZIP code.'); return; }
 
     const btn = document.querySelector('.email-form button');
     btn.textContent = 'Joining…';
