@@ -54,37 +54,131 @@ export default async function handler(req, res) {
     }
 
     // 3. Save to Supabase subscribers
-    await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
+    const subRes = await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
       method: 'POST',
       headers: {
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,
         'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates'
+        'Prefer': 'return=representation,resolution=merge-duplicates'
       },
       body: JSON.stringify({ email, zip, lat, lng, service_interest: service || 'Not specified' })
     });
+    const subData = await subRes.json();
+    const subscriber = Array.isArray(subData) ? subData[0] : subData;
 
-    // 4. Trigger ripple matching — create or join a ripple
-    if (service) {
-      const host = req.headers.host;
-      const protocol = host.includes('localhost') ? 'http' : 'https';
-      fetch(`${protocol}://${host}/api/ripple`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, service, lat, lng, zip })
+    // 4. Ripple matching — find or create ripple
+    if (service && subscriber?.id) {
+
+      // Get radius setting
+      const settingsRes = await fetch(`${supabaseUrl}/rest/v1/settings?key=eq.ripple_radius_miles`, {
+        headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
       });
+      const settings = await settingsRes.json();
+      const radiusMiles = parseFloat(settings?.[0]?.value || '5');
+
+      // Find open ripples for same service
+      const ripplesRes = await fetch(`${supabaseUrl}/rest/v1/ripples?status=eq.open`, {
+        headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
+      });
+      const openRipples = await ripplesRes.json();
+
+      // Filter by distance and service
+      let matchedRipple = null;
+      if (Array.isArray(openRipples)) {
+        for (const ripple of openRipples) {
+          if (!ripple.lat || !ripple.lng) continue;
+          const sameService = ripple.service_type?.toLowerCase().includes(service.toLowerCase()) ||
+                              service.toLowerCase().includes(ripple.service_type?.toLowerCase());
+          if (!sameService) continue;
+          const dist = haversine(lat, lng, ripple.lat, ripple.lng);
+          if (dist <= radiusMiles) {
+            matchedRipple = ripple;
+            break;
+          }
+        }
+      }
+
+      if (matchedRipple) {
+        // Join existing ripple
+        await fetch(`${supabaseUrl}/rest/v1/ripple_members`, {
+          method: 'POST',
+          headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ripple_id: matchedRipple.id, subscriber_id: subscriber.id })
+        });
+        await fetch(`${supabaseUrl}/rest/v1/ripples?id=eq.${matchedRipple.id}`, {
+          method: 'PATCH',
+          headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ member_count: matchedRipple.member_count + 1 })
+        });
+
+      } else {
+        // Create new ripple
+        const newRippleRes = await fetch(`${supabaseUrl}/rest/v1/ripples`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({ service_type: service, lat, lng, zip, member_count: 1, status: 'open' })
+        });
+        const newRippleData = await newRippleRes.json();
+        const newRipple = Array.isArray(newRippleData) ? newRippleData[0] : newRippleData;
+
+        if (newRipple?.id) {
+          // Add to ripple_members
+          await fetch(`${supabaseUrl}/rest/v1/ripple_members`, {
+            method: 'POST',
+            headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ripple_id: newRipple.id, subscriber_id: subscriber.id })
+          });
+
+          // Notify nearby subscribers
+          const allSubsRes = await fetch(`${supabaseUrl}/rest/v1/subscribers?select=*`, {
+            headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
+          });
+          const allSubs = await allSubsRes.json();
+
+          const nearby = Array.isArray(allSubs) ? allSubs.filter(sub => {
+            if (sub.email === email || !sub.lat || !sub.lng) return false;
+            return haversine(lat, lng, sub.lat, sub.lng) <= radiusMiles;
+          }) : [];
+
+          for (const sub of nearby) {
+            await fetch('https://api.brevo.com/v3/smtp/email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'api-key': brevoKey },
+              body: JSON.stringify({
+                to: [{ email: sub.email }],
+                templateId: 1,
+                params: {
+                  first_name: email.split('@')[0],
+                  service_type: service,
+                  ripple_url: `https://communityripple.com/ripple/${newRipple.id}`
+                }
+              })
+            });
+          }
+        }
+      }
     }
 
-    return res.status(200).json({
-      success: true,
-      lat,
-      lng,
-      formatted_address: formattedAddress
-    });
+    return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress });
 
   } catch (err) {
     console.error('Subscribe error:', err.message);
     return res.status(500).json({ error: err.message });
   }
+}
+
+function haversine(lat1, lng1, lat2, lng2) {
+  const R = 3958.8;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
