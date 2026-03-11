@@ -1,4 +1,4 @@
-  // api/subscribe.js v2
+// api/subscribe.js v3
 // Vercel serverless function — runs on the server, never exposed to the browser
 // Your Brevo API key is stored safely in Vercel environment variables
 
