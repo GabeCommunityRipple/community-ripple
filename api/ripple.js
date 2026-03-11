@@ -1,14 +1,32 @@
-// ripple.js v2
-import { createClient } from '@supabase/supabase-js';
+// ripple.js v3 — uses Supabase REST API directly, no npm package needed
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
 
-// Haversine formula — calculates straight-line distance between two coordinates
+// Helper to call Supabase REST API
+async function db(table, options = {}) {
+  const { method = 'GET', filter = '', body = null, prefer = '' } = options;
+  const url = `${SUPABASE_URL}/rest/v1/${table}${filter}`;
+  const headers = {
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+    'Content-Type': 'application/json',
+    'Prefer': prefer || (method === 'POST' ? 'return=representation' : '')
+  };
+  const res = await fetch(url, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : null
+  });
+  if (method === 'GET' || prefer.includes('return=representation')) {
+    return await res.json();
+  }
+  return null;
+}
+
+// Haversine formula — straight line distance between two coordinates
 function distanceMiles(lat1, lng1, lat2, lng2) {
-  const R = 3958.8; // Earth radius in miles
+  const R = 3958.8;
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLng = (lng2 - lng1) * Math.PI / 180;
   const a =
@@ -30,31 +48,25 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Get the current ripple radius from settings
-    const { data: setting } = await supabase
-      .from('settings')
-      .select('value')
-      .eq('key', 'ripple_radius_miles')
-      .single();
+    // 1. Get ripple radius from settings
+    const settings = await db('settings', { filter: '?key=eq.ripple_radius_miles' });
+    const radiusMiles = parseFloat(settings?.[0]?.value || '5');
 
-    const radiusMiles = parseFloat(setting?.value || '5');
+    // 2. Save or update subscriber
+    const subscribers = await db('subscribers', {
+      method: 'POST',
+      body: { email, zip, lat, lng, service_interest: service },
+      prefer: 'return=representation,resolution=merge-duplicates'
+    });
+    const subscriber = subscribers?.[0];
 
-    // 2. Save or update subscriber in database
-    const { data: subscriber } = await supabase
-      .from('subscribers')
-      .upsert({ email, zip, lat, lng, service_interest: service }, { onConflict: 'email' })
-      .select()
-      .single();
-
-    // 3. Look for an open ripple nearby for the same service
-    const { data: openRipples } = await supabase
-      .from('ripples')
-      .select('*')
-      .eq('status', 'open')
-      .ilike('service_type', `%${service}%`);
+    // 3. Find open ripples nearby for same service
+    const openRipples = await db('ripples', {
+      filter: `?status=eq.open&service_type=ilike.*${encodeURIComponent(service)}*`
+    });
 
     let matchedRipple = null;
-    if (openRipples) {
+    if (Array.isArray(openRipples)) {
       for (const ripple of openRipples) {
         const dist = distanceMiles(lat, lng, ripple.lat, ripple.lng);
         if (dist <= radiusMiles) {
@@ -64,44 +76,38 @@ export default async function handler(req, res) {
       }
     }
 
-    // 4. Join existing ripple or start a new one
+    // 4. Join existing or start new ripple
     if (matchedRipple) {
-      // Join existing ripple
-      await supabase.from('ripple_members').insert({
-        ripple_id: matchedRipple.id,
-        subscriber_id: subscriber.id
+      await db('ripple_members', {
+        method: 'POST',
+        body: { ripple_id: matchedRipple.id, subscriber_id: subscriber?.id }
       });
-
-      await supabase
-        .from('ripples')
-        .update({ member_count: matchedRipple.member_count + 1 })
-        .eq('id', matchedRipple.id);
-
+      await db(`ripples?id=eq.${matchedRipple.id}`, {
+        method: 'PATCH',
+        body: { member_count: matchedRipple.member_count + 1 }
+      });
       return res.status(200).json({
         status: 'joined',
         ripple_id: matchedRipple.id,
         member_count: matchedRipple.member_count + 1,
-        message: `You joined an existing Ripple with ${matchedRipple.member_count + 1} neighbors!`
+        message: `You joined a Ripple with ${matchedRipple.member_count + 1} neighbors!`
       });
-
     } else {
-      // Start a new ripple
-      const { data: newRipple } = await supabase
-        .from('ripples')
-        .insert({ service_type: service, lat, lng, zip, member_count: 1 })
-        .select()
-        .single();
-
-      await supabase.from('ripple_members').insert({
-        ripple_id: newRipple.id,
-        subscriber_id: subscriber.id
+      const newRipples = await db('ripples', {
+        method: 'POST',
+        body: { service_type: service, lat, lng, zip, member_count: 1 },
+        prefer: 'return=representation'
       });
-
+      const newRipple = newRipples?.[0];
+      await db('ripple_members', {
+        method: 'POST',
+        body: { ripple_id: newRipple?.id, subscriber_id: subscriber?.id }
+      });
       return res.status(200).json({
         status: 'created',
-        ripple_id: newRipple.id,
+        ripple_id: newRipple?.id,
         member_count: 1,
-        message: `You started a new Ripple! We'll notify neighbors within ${radiusMiles} miles.`
+        message: `You started a new Ripple! Notifying neighbors within ${radiusMiles} miles.`
       });
     }
 
