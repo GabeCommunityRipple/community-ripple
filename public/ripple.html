@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join this Ripple — Community Ripple</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #5B8DD9;
+      --blue-dark: #3f6fbe;
+      --blue-light: #ddeaff;
+      --green: #3DAE4A;
+      --yellow: #D4E600;
+      --orange: #F5A04A;
+      --white: #ffffff;
+      --off-white: #f7faff;
+      --ink: #1a2540;
+      --muted: #6b7a9e;
+      --border: #dde6f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo img { height: 36px; object-fit: contain; }
+
+    /* HERO */
+    .ripple-hero {
+      background: var(--ink);
+      color: white;
+      text-align: center;
+      padding: 60px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ripple-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(91,141,217,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ripple-badge {
+      display: inline-block;
+      background: rgba(91,141,217,0.2);
+      color: #a0c4ff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+    .ripple-hero h1 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .ripple-hero h1 span { color: var(--yellow); }
+    .ripple-hero p {
+      color: #a0b4cc;
+      font-size: 1rem;
+      margin-bottom: 32px;
+    }
+
+    /* MEMBER COUNT */
+    .member-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 20px 32px;
+      margin-bottom: 16px;
+    }
+    .count-num {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      color: var(--yellow);
+      line-height: 1;
+    }
+    .count-label {
+      text-align: left;
+    }
+    .count-label strong {
+      display: block;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+    .count-label span {
+      font-size: 0.82rem;
+      color: #a0b4cc;
+    }
+
+    /* DISCOUNT PROGRESS */
+    .discount-bar {
+      max-width: 500px;
+      margin: 0 auto 40px;
+    }
+    .discount-current {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .discount-next {
+      font-size: 0.82rem;
+      color: #a0b4cc;
+    }
+
+    /* MAIN CARD */
+    .main-card {
+      max-width: 580px;
+      margin: -40px auto 40px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(26,37,64,0.15);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-section {
+      padding: 32px 36px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-section:last-child { border-bottom: none; }
+
+    .card-section h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    /* JOIN FORM */
+    .join-form input {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+    .join-form input:focus { border-color: var(--blue); }
+    .join-btn {
+      width: 100%;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .join-btn:hover { background: var(--blue-dark); }
+
+    /* SHARE SECTION */
+    .share-intro {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .share-message-box {
+      background: var(--off-white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 0.88rem;
+      color: var(--ink);
+      line-height: 1.6;
+      margin-bottom: 14px;
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blue);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover { background: var(--blue-light); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+    .share-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      flex: 1;
+      min-width: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+    .share-btn:hover { opacity: 0.85; }
+    .share-nextdoor { background: #00b246; color: white; }
+    .share-facebook { background: #1877f2; color: white; }
+    .share-whatsapp { background: #25d366; color: white; }
+    .share-copy { background: var(--ink); color: white; }
+
+    /* TIERS */
+    .tiers-mini {
+      display: flex;
+      gap: 8px;
+    }
+    .tier-mini {
+      flex: 1;
+      text-align: center;
+      background: var(--off-white);
+      border-radius: 10px;
+      padding: 12px 6px;
+      border: 1.5px solid var(--border);
+    }
+    .tier-mini.active {
+      border-color: var(--green);
+      background: #f0fff4;
+    }
+    .tier-mini.active .tier-pct { color: var(--green); }
+    .tier-pct {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: var(--muted);
+    }
+    .tier-homes {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* SUCCESS */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 32px;
+    }
+    .success-state.show { display: block; }
+    .success-emoji { font-size: 3rem; margin-bottom: 12px; }
+    .success-state h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .success-state p { color: var(--muted); font-size: 0.9rem; }
+
+    /* LOADING */
+    .loading {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .ripple-hero { padding: 40px 20px 60px; }
+      .main-card { margin: -30px 16px 32px; }
+      .card-section { padding: 24px 20px; }
+      .tiers-mini { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <img src="/logo_gill_sans_text.png" alt="Community Ripple">
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="ripple-hero" id="ripple-hero">
+  <div class="ripple-badge">🌊 Active Ripple</div>
+  <h1>Join the <span id="hero-service">...</span> Ripple</h1>
+  <p>A neighbor near you started this — the more who join, the more everyone saves.</p>
+
+  <div class="member-count">
+    <div class="count-num" id="member-count">...</div>
+    <div class="count-label">
+      <strong>neighbors joined</strong>
+      <span>in your area</span>
+    </div>
+  </div>
+
+  <div class="discount-bar">
+    <div class="discount-current" id="discount-current">Loading savings...</div>
+    <div class="discount-next" id="discount-next"></div>
+  </div>
+</div>
+
+<!-- MAIN CARD -->
+<div class="main-card">
+
+  <!-- LOADING STATE -->
+  <div class="loading" id="loading-state">
+    <p>Loading Ripple details...</p>
+  </div>
+
+  <!-- JOIN FORM -->
+  <div id="join-section" style="display:none;">
+    <div class="card-section">
+      <h2>🏠 Join this Ripple</h2>
+      <div class="join-form">
+        <input type="email" id="join-email" placeholder="your@email.com">
+        <input type="text" id="join-address" placeholder="Your home address">
+        <button class="join-btn" onclick="handleJoin()">Join the Ripple & Save →</button>
+      </div>
+      <p style="font-size:0.75rem;color:var(--muted);margin-top:10px;text-align:center;">Your address confirms you're nearby. Never shared publicly.</p>
+    </div>
+
+    <!-- DISCOUNT TIERS -->
+    <div class="card-section">
+      <h2>💰 Savings tiers</h2>
+      <div class="tiers-mini">
+        <div class="tier-mini" id="tier-1">
+          <div class="tier-pct">10%</div>
+          <div class="tier-homes">2-3 homes</div>
+        </div>
+        <div class="tier-mini" id="tier-2">
+          <div class="tier-pct">18%</div>
+          <div class="tier-homes">4-5 homes</div>
+        </div>
+        <div class="tier-mini" id="tier-3">
+          <div class="tier-pct">25%</div>
+          <div class="tier-homes">6-8 homes</div>
+        </div>
+        <div class="tier-mini" id="tier-4">
+          <div class="tier-pct">30%</div>
+          <div class="tier-homes">9+ homes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHARE SECTION -->
+    <div class="card-section" id="share-section">
+      <h2>📣 Spread the Ripple</h2>
+      <p class="share-intro">The more neighbors who join, the bigger the discount for everyone. Share this in your neighborhood groups!</p>
+
+      <div class="share-message-box" id="share-message-box">
+        <span id="share-message-text"></span>
+        <button class="copy-btn" id="copy-msg-btn" onclick="copyMessage()">Copy</button>
+      </div>
+
+      <div class="share-buttons">
+        <a class="share-btn share-whatsapp" id="whatsapp-btn" href="#" target="_blank">
+          💬 WhatsApp
+        </a>
+        <a class="share-btn share-facebook" id="facebook-btn" href="#" target="_blank">
+          👥 Facebook
+        </a>
+        <button class="share-btn share-copy" onclick="copyLink()">
+          🔗 Copy Link
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-state" id="success-state">
+    <div class="success-emoji">🌊</div>
+    <h2>You're in the Ripple!</h2>
+    <p>We'll contact you once the Ripple fills up with your discount details.</p>
+    <div style="margin-top:24px;">
+      <p style="font-weight:700;color:var(--ink);margin-bottom:12px;">Help it grow — share with your neighbors:</p>
+      <div class="share-buttons" style="justify-content:center;">
+        <a class="share-btn share-whatsapp" id="success-whatsapp" href="#" target="_blank">💬 WhatsApp</a>
+        <a class="share-btn share-facebook" id="success-facebook" href="#" target="_blank">👥 Facebook</a>
+        <button class="share-btn share-copy" onclick="copyLink()">🔗 Copy Link</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiN1tOJuN8stsCU1YirTSvh6uKyxOHIAM&libraries=places&callback=initAutocomplete" async defer></script>
+<script>
+  const SUPABASE_URL = 'https://lxirbdvcmxzfdmmoxkbes.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4aXJiZHZjbXh6ZmRtbW94a2JlcyIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzQxNjM0NjUzLCJleHAiOjIwNTcyMTA2NTN9.eLzMJ4xlCTHUKMTYDQCbgRX6-UGe5EbSrJqSiNgkMsg';
+
+  let rippleData = null;
+  let rippleId = null;
+
+  // Get ripple ID from URL
+  const pathParts = window.location.pathname.split('/');
+  rippleId = pathParts[pathParts.length - 1];
+
+  function getDiscount(count) {
+    if (count >= 9) return { pct: '30%', tier: 4 };
+    if (count >= 6) return { pct: '25%', tier: 3 };
+    if (count >= 4) return { pct: '18%', tier: 2 };
+    if (count >= 2) return { pct: '10%', tier: 1 };
+    return { pct: '0%', tier: 0 };
+  }
+
+  function getNextTier(count) {
+    if (count >= 9) return null;
+    if (count >= 6) return { needed: 9 - count, pct: '30%' };
+    if (count >= 4) return { needed: 6 - count, pct: '25%' };
+    if (count >= 2) return { needed: 4 - count, pct: '18%' };
+    return { needed: 2 - count, pct: '10%' };
+  }
+
+  async function loadRipple() {
+    if (!rippleId) {
+      document.getElementById('loading-state').innerHTML = '<p>Ripple not found.</p>';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/ripples?id=eq.${rippleId}&select=*`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const data = await res.json();
+      rippleData = data?.[0];
+
+      if (!rippleData) {
+        document.getElementById('loading-state').innerHTML = '<p>This Ripple could not be found.</p>';
+        return;
+      }
+
+      // Update hero
+      const service = rippleData.service_type || 'Home Service';
+      const count = rippleData.member_count || 1;
+      const discount = getDiscount(count);
+      const next = getNextTier(count);
+
+      document.getElementById('hero-service').textContent = service;
+      document.getElementById('member-count').textContent = count;
+      document.title = `Join the ${service} Ripple — Community Ripple`;
+
+      if (discount.pct !== '0%') {
+        document.getElementById('discount-current').textContent = `✅ ${discount.pct} discount unlocked!`;
+      } else {
+        document.getElementById('discount-current').textContent = `1 neighbor joined — need 1 more to unlock savings!`;
+      }
+
+      if (next) {
+        document.getElementById('discount-next').textContent = `${next.needed} more neighbor${next.needed > 1 ? 's' : ''} needed to reach ${next.pct} off`;
+      }
+
+      // Highlight active tier
+      if (discount.tier > 0) {
+        document.getElementById(`tier-${discount.tier}`).classList.add('active');
+      }
+
+      // Set share message
+      const url = window.location.href;
+      const shareMsg = `🌊 Hey neighbors! I just joined a Community Ripple for ${service} in our area. The more neighbors who join, the bigger the discount for everyone — up to 30% off! Join here: ${url}`;
+      document.getElementById('share-message-text').textContent = shareMsg;
+
+      // Set share links
+      const encodedMsg = encodeURIComponent(shareMsg);
+      const waUrl = `https://wa.me/?text=${encodedMsg}`;
+      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodedMsg}`;
+
+      document.getElementById('whatsapp-btn').href = waUrl;
+      document.getElementById('facebook-btn').href = fbUrl;
+      document.getElementById('success-whatsapp').href = waUrl;
+      document.getElementById('success-facebook').href = fbUrl;
+
+      // Show join section
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('join-section').style.display = 'block';
+
+    } catch (err) {
+      document.getElementById('loading-state').innerHTML = '<p>Error loading Ripple. Please try again.</p>';
+    }
+  }
+
+  function initAutocomplete() {
+    const input = document.getElementById('join-address');
+    if (!input) return;
+    const autocomplete = new google.maps.places.Autocomplete(input, {
+      types: ['address'],
+      componentRestrictions: { country: 'us' }
+    });
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      if (place.formatted_address) input.value = place.formatted_address;
+    });
+  }
+
+  async function handleJoin() {
+    const email = document.getElementById('join-email').value.trim();
+    const address = document.getElementById('join-address').value.trim();
+
+    if (!email) { alert('Please enter your email.'); return; }
+    if (!address) { alert('Please enter your address.'); return; }
+
+    const btn = document.querySelector('.join-btn');
+    btn.textContent = 'Joining…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          address,
+          service: rippleData?.service_type || ''
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        document.getElementById('join-section').style.display = 'none';
+        document.getElementById('success-state').classList.add('show');
+      } else {
+        throw new Error(data.error || 'Something went wrong.');
+      }
+    } catch (err) {
+      btn.textContent = 'Join the Ripple & Save →';
+      btn.disabled = false;
+      alert('Error: ' + err.message);
+    }
+  }
+
+  function copyMessage() {
+    const text = document.getElementById('share-message-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-msg-btn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert('Link copied! Paste it in your neighborhood group.');
+    });
+  }
+
+  loadRipple();
+</script>
+</body>
+</html>
