@@ -924,7 +924,18 @@
       showFormError('Oops — ' + err.message + ' Please try again.');
     }
   }
-
+  
+function copyRippleLink() {
+    const text = document.getElementById('ripple-link-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = event.target;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    }).catch(() => {
+      prompt('Copy this link:', text);
+    });
+  }
+  
   function showFormError(msg) {
     let el = document.getElementById('form-error');
     if (!el) {
