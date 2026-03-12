@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal — Community Ripple</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #5B8DD9;
+      --blue-dark: #3f6fbe;
+      --blue-light: #ddeaff;
+      --ink: #1a2540;
+      --muted: #6b7a9e;
+      --border: #dde6f7;
+      --off-white: #f7faff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--ink);
+    }
+    nav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .back-link {
+      font-size: 0.85rem;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--border);
+      background: white;
+      padding: 0 40px;
+    }
+    .tab {
+      padding: 16px 24px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s;
+    }
+    .tab.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+    .content {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 24px 80px;
+    }
+    .doc { display: none; }
+    .doc.active { display: block; }
+    .doc-header {
+      background: var(--ink);
+      color: white;
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+    }
+    .doc-header h1 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+    .doc-header p { color: #a0b4cc; font-size: 0.85rem; }
+    .doc-body { background: white; border-radius: 16px; padding: 36px; border: 1.5px solid var(--border); }
+    h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin: 28px 0 10px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    h2:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+    p { font-size: 0.92rem; color: #4a5568; line-height: 1.8; margin-bottom: 12px; }
+    ul { margin: 8px 0 12px 20px; }
+    li { font-size: 0.92rem; color: #4a5568; line-height: 1.8; margin-bottom: 4px; }
+    strong { color: var(--ink); }
+    a { color: var(--blue); }
+    .contact-box {
+      background: var(--blue-light);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 24px;
+    }
+    .contact-box p { color: var(--ink); margin: 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <img src="/logo_gill_sans_text.png" alt="Community Ripple">
+  </a>
+  <a class="back-link" href="/">← Back to Home</a>
+</nav>
+
+<div class="tabs">
+  <div class="tab active" onclick="showDoc('terms')">Terms of Service</div>
+  <div class="tab" onclick="showDoc('privacy')">Privacy Policy</div>
+</div>
+
+<div class="content">
+
+  <!-- TERMS OF SERVICE -->
+  <div class="doc active" id="doc-terms">
+    <div class="doc-header">
+      <h1>Terms of Service</h1>
+      <p>Last updated: March 12, 2026 &nbsp;·&nbsp; Community Ripple, LLC &nbsp;·&nbsp; Virginia</p>
+    </div>
+    <div class="doc-body">
+
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing or using Community Ripple ("the Platform," "we," "us," or "our"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Platform. Community Ripple is operated by Community Ripple, LLC, a Virginia limited liability company.</p>
+
+      <h2>2. Description of Service</h2>
+      <p>Community Ripple is a group purchasing coordination platform that connects homeowners in the same geographic area who need the same home services (such as gutter cleaning, lawn care, pressure washing, and similar services). By grouping neighbors together, we facilitate access to discounted pricing from local service contractors.</p>
+      <p>Community Ripple does not itself provide home services. We are a technology platform that coordinates demand and connects homeowners with contractors. All service work is performed by independent third-party contractors.</p>
+
+      <h2>3. Eligibility</h2>
+      <p>You must be at least 18 years old and a homeowner or resident with authority to arrange home services at the address you provide. By using the Platform, you represent and warrant that you meet these requirements.</p>
+
+      <h2>4. User Accounts and Registration</h2>
+      <p>To use our Platform, you must provide a valid email address and home address. You agree to provide accurate, current, and complete information. You are responsible for maintaining the confidentiality of your account information and for all activities that occur under your account.</p>
+
+      <h2>5. Ripples — How They Work</h2>
+      <p>A "Ripple" is a group purchasing event where multiple homeowners in the same geographic area coordinate to receive the same home service at a discounted rate. By joining or starting a Ripple, you understand and agree that:</p>
+      <ul>
+        <li>Participation in a Ripple does not guarantee service will be performed</li>
+        <li>Discount levels depend on the number of neighbors who join</li>
+        <li>Community Ripple will share your contact information with matched contractors for the purpose of fulfilling the Ripple</li>
+        <li>Final pricing and service terms are determined between you and the contractor</li>
+        <li>Community Ripple is not a party to any service agreement between you and a contractor</li>
+      </ul>
+
+      <h2>6. Contractor Relationships</h2>
+      <p>Contractors who fulfill Ripples are independent third parties, not employees or agents of Community Ripple. We do not control, supervise, or direct the work of contractors. Community Ripple makes no representations or warranties regarding the quality, safety, legality, or any other aspect of services provided by contractors.</p>
+      <p>You agree to conduct your own due diligence when engaging with contractors, including verifying licenses, insurance, and references as appropriate.</p>
+
+      <h2>7. Sharing of Information</h2>
+      <p>By joining or starting a Ripple, you consent to Community Ripple sharing your name, email address, and service address with contractors matched to fulfill that specific Ripple. This sharing is limited to the purpose of service fulfillment and is governed by our Privacy Policy.</p>
+
+      <h2>8. Prohibited Conduct</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Provide false or misleading information about your identity or address</li>
+        <li>Use the Platform for any unlawful purpose</li>
+        <li>Spam, harass, or abuse other users or contractors</li>
+        <li>Attempt to circumvent or manipulate the Platform's matching or discount systems</li>
+        <li>Use automated tools to access or scrape the Platform</li>
+      </ul>
+
+      <h2>9. Intellectual Property</h2>
+      <p>All content, trademarks, logos, and technology on the Platform are the property of Community Ripple, LLC. You may not reproduce, distribute, or create derivative works without our express written permission.</p>
+
+      <h2>10. Disclaimer of Warranties</h2>
+      <p>THE PLATFORM IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. COMMUNITY RIPPLE DOES NOT WARRANT THAT THE PLATFORM WILL BE UNINTERRUPTED, ERROR-FREE, OR THAT RIPPLES WILL RESULT IN COMPLETED SERVICES OR SPECIFIC DISCOUNT LEVELS.</p>
+
+      <h2>11. Limitation of Liability</h2>
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, COMMUNITY RIPPLE, LLC SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING FROM YOUR USE OF THE PLATFORM OR ANY SERVICES ARRANGED THROUGH IT. OUR TOTAL LIABILITY SHALL NOT EXCEED $100.</p>
+
+      <h2>12. Indemnification</h2>
+      <p>You agree to indemnify and hold harmless Community Ripple, LLC and its officers, directors, employees, and agents from any claims, damages, or expenses arising from your use of the Platform, your violation of these Terms, or your interactions with contractors.</p>
+
+      <h2>13. Governing Law</h2>
+      <p>These Terms are governed by the laws of the Commonwealth of Virginia, without regard to conflict of law principles. Any disputes shall be resolved in the courts of Virginia.</p>
+
+      <h2>14. Changes to Terms</h2>
+      <p>We reserve the right to modify these Terms at any time. We will notify registered users of material changes via email. Continued use of the Platform after changes constitutes acceptance of the new Terms.</p>
+
+      <h2>15. Contact Us</h2>
+      <div class="contact-box">
+        <p>Questions about these Terms? Contact us at:<br>
+        <strong>Community Ripple, LLC</strong><br>
+        Email: <a href="mailto:gabe@communityripple.com">gabe@communityripple.com</a><br>
+        Website: <a href="https://communityripple.com">communityripple.com</a></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PRIVACY POLICY -->
+  <div class="doc" id="doc-privacy">
+    <div class="doc-header">
+      <h1>Privacy Policy</h1>
+      <p>Last updated: March 12, 2026 &nbsp;·&nbsp; Community Ripple, LLC &nbsp;·&nbsp; Virginia</p>
+    </div>
+    <div class="doc-body">
+
+      <h2>1. Introduction</h2>
+      <p>Community Ripple, LLC ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Platform at communityripple.com.</p>
+
+      <h2>2. Information We Collect</h2>
+      <p><strong>Information you provide directly:</strong></p>
+      <ul>
+        <li>Email address</li>
+        <li>Home address</li>
+        <li>Service interests and preferences</li>
+      </ul>
+      <p><strong>Information collected automatically:</strong></p>
+      <ul>
+        <li>Geographic coordinates derived from your address (latitude and longitude)</li>
+        <li>ZIP code</li>
+        <li>Usage data and interaction with the Platform</li>
+      </ul>
+
+      <h2>3. How We Use Your Information</h2>
+      <p>We use your information to:</p>
+      <ul>
+        <li>Match you with nearby neighbors forming Ripples for the same service</li>
+        <li>Send you email notifications when a Ripple starts near you</li>
+        <li>Connect you with contractors to fulfill Ripples you join</li>
+        <li>Improve the Platform and our services</li>
+        <li>Communicate with you about your account and Ripple activity</li>
+      </ul>
+
+      <h2>4. Sharing of Your Information</h2>
+      <p>We share your information in the following limited circumstances:</p>
+      <ul>
+        <li><strong>With contractors:</strong> When you join or start a Ripple, we share your name, email, and service address with the contractor matched to fulfill that Ripple. This is necessary to complete the service.</li>
+        <li><strong>Service providers:</strong> We use trusted third-party services including Brevo (email delivery), Supabase (database), Google Maps (address verification), and Vercel (hosting). These providers process your data only as necessary to provide their services.</li>
+        <li><strong>Legal requirements:</strong> We may disclose your information if required by law or to protect the rights and safety of our users.</li>
+      </ul>
+      <p>We do not sell your personal information to third parties.</p>
+
+      <h2>5. Data Retention</h2>
+      <p>We retain your information for as long as your account is active or as needed to provide services. You may request deletion of your data at any time by contacting us at <a href="mailto:gabe@communityripple.com">gabe@communityripple.com</a>.</p>
+
+      <h2>6. Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Access the personal information we hold about you</li>
+        <li>Request correction of inaccurate information</li>
+        <li>Request deletion of your information</li>
+        <li>Opt out of marketing emails at any time using the unsubscribe link in our emails</li>
+      </ul>
+
+      <h2>7. Email Communications</h2>
+      <p>By signing up, you consent to receive email notifications about Ripple activity in your area. You can unsubscribe at any time using the link in any email we send. Transactional emails related to your account may still be sent after unsubscribing from marketing communications.</p>
+
+      <h2>8. Location Data</h2>
+      <p>We convert your home address to geographic coordinates (latitude and longitude) using Google Maps. These coordinates are used solely to match you with nearby Ripples within your neighborhood. We do not track your real-time location.</p>
+
+      <h2>9. Security</h2>
+      <p>We implement industry-standard security measures to protect your information. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.</p>
+
+      <h2>10. Children's Privacy</h2>
+      <p>Our Platform is not directed to children under 18 years of age. We do not knowingly collect information from children. If you believe a child has provided us with personal information, please contact us immediately.</p>
+
+      <h2>11. Third-Party Links</h2>
+      <p>Our Platform may contain links to third-party websites. We are not responsible for the privacy practices of those websites and encourage you to review their privacy policies.</p>
+
+      <h2>12. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. We will notify you of significant changes by email. Your continued use of the Platform after changes constitutes acceptance of the updated policy.</p>
+
+      <h2>13. Contact Us</h2>
+      <div class="contact-box">
+        <p>Questions about this Privacy Policy? Contact us at:<br>
+        <strong>Community Ripple, LLC</strong><br>
+        Email: <a href="mailto:gabe@communityripple.com">gabe@communityripple.com</a><br>
+        Website: <a href="https://communityripple.com">communityripple.com</a></p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showDoc(doc) {
+    document.querySelectorAll('.doc').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('doc-' + doc).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
