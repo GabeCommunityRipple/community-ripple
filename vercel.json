@@ -4,3 +4,4 @@
     { "source": "/ripple/(.*)", "destination": "/ripple.html" }
   ]
 }
+{ "source": "/admin", "destination": "/admin.html" }
