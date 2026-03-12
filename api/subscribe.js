@@ -177,7 +177,7 @@ export default async function handler(req, res) {
       console.log('Skipping ripple — service:', service, 'subscriber id:', subscriber?.id);
     }
 
-    return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress });
+  return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress, ripple_id: newRipple?.id || matchedRipple?.id || null });
 
   } catch (err) {
     console.error('Subscribe error:', err.message);
