@@ -1,6 +1,6 @@
 # Community Ripple
 
-Geographic  demand-clustering platform for neighborhood home services.
+Geographic demand-clustering platform for neighborhood home services.
 
 ## Project Structure
 
