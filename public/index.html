@@ -797,9 +797,21 @@
 
     <div class="success-message" id="success-msg">
       <div class="big-emoji">🌊</div>
-      <h3>You're in the loop!</h3>
-      <p>We'll let you know the moment a Ripple starts in your neighborhood.</p>
+      <h3>You started a Ripple!</h3>
+      <p>Share it with your neighbors to unlock bigger savings!</p>
+      <div id="share-link-box" style="margin-top:16px;display:none;">
+        <p style="font-size:0.82rem;font-weight:700;color:#1a2540;margin-bottom:8px;">Your Ripple link:</p>
+        <div style="display:flex;gap:8px;align-items:center;background:white;border:2px solid #dde6f7;border-radius:12px;padding:10px 14px;margin-bottom:14px;">
+          <span id="ripple-link-text" style="flex:1;font-size:0.82rem;color:#1a2540;word-break:break-all;"></span>
+          <button onclick="copyRippleLink()" style="background:#5B8DD9;color:white;border:none;border-radius:8px;padding:6px 12px;font-weight:800;font-size:0.75rem;cursor:pointer;white-space:nowrap;">Copy</button>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <a id="success-whatsapp" href="#" target="_blank" style="flex:1;min-width:120px;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:10px;background:#25d366;color:white;font-weight:800;font-size:0.85rem;text-decoration:none;">💬 WhatsApp</a>
+          <a id="success-facebook" href="#" target="_blank" style="flex:1;min-width:120px;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:10px;background:#1877f2;color:white;font-weight:800;font-size:0.85rem;text-decoration:none;">👥 Facebook</a>
+        </div>
+      </div>
     </div>
+ 
   </div>
 </section>
 
