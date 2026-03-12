@@ -903,9 +903,18 @@
 
       const data = await response.json();
 
-      if (response.ok && data.success) {
+    if (response.ok && data.success) {
         document.getElementById('signup-form-wrap').style.display = 'none';
         document.getElementById('success-msg').classList.add('show');
+        if (data.ripple_id) {
+          const rippleUrl = `https://communityripple.com/ripple/${data.ripple_id}`;
+          const service = document.getElementById('service-input').value.trim() || 'home service';
+          const shareMsg = encodeURIComponent(`🌊 Hey neighbors! I just started a Community Ripple for ${service}. The more who join, the bigger the discount — up to 30% off! Join here: ${rippleUrl}`);
+          document.getElementById('ripple-link-text').textContent = rippleUrl;
+          document.getElementById('success-whatsapp').href = `https://wa.me/?text=${shareMsg}`;
+          document.getElementById('success-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(rippleUrl)}`;
+          document.getElementById('share-link-box').style.display = 'block';
+        }
       } else {
         throw new Error(data.error || 'Something went wrong.');
       }
