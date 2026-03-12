@@ -1,7 +1,7 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/ripple/(.*)", "destination": "/ripple.html" }
+    { "source": "/ripple/(.*)", "destination": "/ripple.html" },
+    { "source": "/admin", "destination": "/admin.html" }
   ]
 }
-{ "source": "/admin", "destination": "/admin.html" }
