@@ -17,6 +17,8 @@ export default async function handler(req, res) {
   if (!googleKey) return res.status(500).json({ error: 'Google Maps API key not configured.' });
 
   try {
+    let rippleId = null;
+
     // 1. Convert address to lat/lng
     const geoRes = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${googleKey}`);
     const geoData = await geoRes.json();
@@ -110,6 +112,7 @@ export default async function handler(req, res) {
 
       if (matchedRipple) {
         console.log('Joining existing ripple:', matchedRipple.id);
+        rippleId = matchedRipple.id;
         await fetch(`${supabaseUrl}/rest/v1/ripple_members`, {
           method: 'POST',
           headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`, 'Content-Type': 'application/json' },
@@ -138,6 +141,7 @@ export default async function handler(req, res) {
         const newRipple = Array.isArray(newRippleData) ? newRippleData[0] : newRippleData;
 
         if (newRipple?.id) {
+          rippleId = newRipple.id;
           await fetch(`${supabaseUrl}/rest/v1/ripple_members`, {
             method: 'POST',
             headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`, 'Content-Type': 'application/json' },
@@ -177,7 +181,7 @@ export default async function handler(req, res) {
       console.log('Skipping ripple — service:', service, 'subscriber id:', subscriber?.id);
     }
 
-  return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress, ripple_id: newRipple?.id || matchedRipple?.id || null });
+    return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress, ripple_id: rippleId });
 
   } catch (err) {
     console.error('Subscribe error:', err.message);
