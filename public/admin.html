@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Community Ripple</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #5B8DD9;
+      --blue-dark: #3f6fbe;
+      --blue-light: #ddeaff;
+      --green: #3DAE4A;
+      --yellow: #D4E600;
+      --orange: #F5A04A;
+      --red: #F05C5C;
+      --white: #ffffff;
+      --off-white: #f7faff;
+      --ink: #1a2540;
+      --muted: #6b7a9e;
+      --border: #dde6f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ink);
+    }
+    .login-box {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .login-box img { height: 48px; margin-bottom: 20px; }
+    .login-box h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .login-box p { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+    .login-box input {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+    .login-box input:focus { border-color: var(--blue); }
+    .login-btn {
+      width: 100%;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 13px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .login-btn:hover { background: var(--blue-dark); }
+    .login-error {
+      color: var(--red);
+      font-size: 0.82rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* DASHBOARD */
+    .dashboard { display: none; }
+
+    /* NAV */
+    nav {
+      background: var(--ink);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo img { height: 32px; }
+    .nav-logo span {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      color: white;
+      font-size: 1rem;
+    }
+    .nav-badge {
+      background: var(--red);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+    }
+    .logout-btn {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* MAIN */
+    .main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+    /* STATS ROW */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      border: 1.5px solid var(--border);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .stat-num {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 2rem;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .stat-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    /* SECTION */
+    .section-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .count-badge {
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+
+    /* RIPPLE CARDS */
+    .ripples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .ripple-card {
+      background: white;
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+    }
+    .ripple-card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ripple-service {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+    .ripple-status {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-open { background: #f0fff4; color: var(--green); }
+    .status-closed { background: #fff0f0; color: var(--red); }
+
+    .ripple-card-body { padding: 16px 20px; }
+    .ripple-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .meta-item { }
+    .meta-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+    .meta-value {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+    .discount-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 0.82rem;
+    }
+    .discount-0 { background: #f0f4f8; color: var(--muted); }
+    .discount-10 { background: var(--blue-light); color: var(--blue-dark); }
+    .discount-18 { background: #f0fff4; color: var(--green); }
+    .discount-25 { background: #fff8e6; color: #b45309; }
+    .discount-30 { background: #fffde6; color: #7a6000; }
+
+    .members-list {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+    .members-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .member-email {
+      font-size: 0.82rem;
+      color: var(--ink);
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .member-email:last-child { border-bottom: none; }
+    .email-copy {
+      background: none;
+      border: none;
+      color: var(--blue);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 2px 6px;
+    }
+
+    .ripple-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .action-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+    .action-btn:hover { opacity: 0.85; }
+    .btn-share { background: var(--blue-light); color: var(--blue-dark); }
+    .btn-close { background: #fff0f0; color: var(--red); }
+    .btn-email { background: #f0fff4; color: var(--green); }
+
+    /* SUBSCRIBERS TABLE */
+    .table-wrap {
+      background: white;
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    thead tr { background: var(--off-white); }
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--off-white); }
+
+    .loading-text {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .ripples-grid { grid-template-columns: 1fr; }
+      nav { padding: 14px 20px; }
+      .main { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <img src="/logo_gill_sans_text.png" alt="Community Ripple">
+    <h2>Admin Dashboard</h2>
+    <p>Enter your password to continue</p>
+    <input type="password" id="password-input" placeholder="Password" onkeydown="if(event.key==='Enter') login()">
+    <button class="login-btn" onclick="login()">Sign In →</button>
+    <p class="login-error" id="login-error">Incorrect password. Try again.</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+  <nav>
+    <div class="nav-logo">
+      <img src="/logo_gill_sans_text.png" alt="Community Ripple">
+      <span>Admin</span>
+      <span class="nav-badge">PRIVATE</span>
+    </div>
+    <button class="logout-btn" onclick="logout()">Log out</button>
+  </nav>
+
+  <div class="main">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Ripples</div>
+        <div class="stat-num" id="stat-ripples">—</div>
+        <div class="stat-sub">all time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Open Ripples</div>
+        <div class="stat-num" id="stat-open">—</div>
+        <div class="stat-sub">active now</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Subscribers</div>
+        <div class="stat-num" id="stat-subscribers">—</div>
+        <div class="stat-sub">homeowners</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Ripple Size</div>
+        <div class="stat-num" id="stat-avg">—</div>
+        <div class="stat-sub">neighbors per ripple</div>
+      </div>
+    </div>
+
+    <!-- ACTIVE RIPPLES -->
+    <div class="section-title">
+      🌊 Active Ripples
+      <span class="count-badge" id="ripple-count-badge">loading...</span>
+    </div>
+    <div class="ripples-grid" id="ripples-grid">
+      <div class="loading-text">Loading ripples...</div>
+    </div>
+
+    <!-- SUBSCRIBERS -->
+    <div class="section-title">
+      👥 All Subscribers
+      <span class="count-badge" id="sub-count-badge">loading...</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Service Interest</th>
+            <th>ZIP</th>
+            <th>Lat</th>
+            <th>Lng</th>
+          </tr>
+        </thead>
+        <tbody id="subscribers-table">
+          <tr><td colspan="5" class="loading-text">Loading subscribers...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://lxrbdvcmxzfdmmoxkbes.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4cmJkdmNteHpmZG1tb3hrYmVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxODcwNjQsImV4cCI6MjA4ODc2MzA2NH0.6hjQqHfgrbCOXC6lyAeD7-QpDc9_maLlm3vOQb3Z5dc';
+  const ADMIN_PASSWORD = 'Monticello4361$';
+
+  function login() {
+    const val = document.getElementById('password-input').value;
+    if (val === ADMIN_PASSWORD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadDashboard();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('password-input').value = '';
+  }
+
+  function getDiscount(count) {
+    if (count >= 9) return { pct: '30%', cls: 'discount-30' };
+    if (count >= 6) return { pct: '25%', cls: 'discount-25' };
+    if (count >= 4) return { pct: '18%', cls: 'discount-18' };
+    if (count >= 2) return { pct: '10%', cls: 'discount-10' };
+    return { pct: '0%', cls: 'discount-0' };
+  }
+
+  async function db(table, filter = '') {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${filter}`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    return await res.json();
+  }
+
+  async function loadDashboard() {
+    try {
+      const [ripples, subscribers, members] = await Promise.all([
+        db('ripples', '?select=*&order=created_at.desc'),
+        db('subscribers', '?select=*&order=created_at.desc'),
+        db('ripple_members', '?select=*')
+      ]);
+
+      // Stats
+      const openRipples = ripples.filter(r => r.status === 'open');
+      const avgSize = ripples.length > 0
+        ? (ripples.reduce((sum, r) => sum + (r.member_count || 0), 0) / ripples.length).toFixed(1)
+        : 0;
+
+      document.getElementById('stat-ripples').textContent = ripples.length;
+      document.getElementById('stat-open').textContent = openRipples.length;
+      document.getElementById('stat-subscribers').textContent = subscribers.length;
+      document.getElementById('stat-avg').textContent = avgSize;
+      document.getElementById('ripple-count-badge').textContent = `${openRipples.length} open`;
+      document.getElementById('sub-count-badge').textContent = `${subscribers.length} total`;
+
+      // Build subscriber lookup by ID
+      const subById = {};
+      subscribers.forEach(s => { subById[s.id] = s; });
+
+      // Build members by ripple
+      const membersByRipple = {};
+      members.forEach(m => {
+        if (!membersByRipple[m.ripple_id]) membersByRipple[m.ripple_id] = [];
+        membersByRipple[m.ripple_id].push(m.subscriber_id);
+      });
+
+      // Render ripples
+      const grid = document.getElementById('ripples-grid');
+      if (ripples.length === 0) {
+        grid.innerHTML = '<div class="loading-text">No ripples yet.</div>';
+      } else {
+        grid.innerHTML = ripples.map(r => {
+          const discount = getDiscount(r.member_count || 0);
+          const memberIds = membersByRipple[r.id] || [];
+          const memberEmails = memberIds.map(id => subById[id]?.email).filter(Boolean);
+          const rippleUrl = `https://communityripple.com/ripple/${r.id}`;
+
+          return `
+            <div class="ripple-card">
+              <div class="ripple-card-header">
+                <div class="ripple-service">${r.service_type || 'Unknown service'}</div>
+                <span class="ripple-status ${r.status === 'open' ? 'status-open' : 'status-closed'}">${r.status}</span>
+              </div>
+              <div class="ripple-card-body">
+                <div class="ripple-meta">
+                  <div class="meta-item">
+                    <div class="meta-label">Members</div>
+                    <div class="meta-value">${r.member_count || 0} neighbors</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">Discount Unlocked</div>
+                    <div class="meta-value"><span class="discount-pill ${discount.cls}">${discount.pct} off</span></div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">ZIP</div>
+                    <div class="meta-value">${r.zip || '—'}</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">Created</div>
+                    <div class="meta-value">${new Date(r.created_at).toLocaleDateString()}</div>
+                  </div>
+                </div>
+
+                ${memberEmails.length > 0 ? `
+                <div class="members-list">
+                  <div class="members-label">Members (${memberEmails.length})</div>
+                  ${memberEmails.map(e => `
+                    <div class="member-email">
+                      <span>${e}</span>
+                      <button class="email-copy" onclick="copyText('${e}')">Copy</button>
+                    </div>
+                  `).join('')}
+                </div>` : ''}
+
+                <div class="ripple-actions">
+                  <button class="action-btn btn-share" onclick="copyText('${rippleUrl}')">🔗 Copy Link</button>
+                  <button class="action-btn btn-email" onclick="emailMembers('${memberEmails.join(',')}')">✉️ Email All</button>
+                  <button class="action-btn btn-close" onclick="closeRipple('${r.id}')">✕ Close</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Render subscribers table
+      const tbody = document.getElementById('subscribers-table');
+      if (subscribers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="loading-text">No subscribers yet.</td></tr>';
+      } else {
+        tbody.innerHTML = subscribers.map(s => `
+          <tr>
+            <td>${s.email}</td>
+            <td>${s.service_interest || '—'}</td>
+            <td>${s.zip || '—'}</td>
+            <td>${s.lat ? parseFloat(s.lat).toFixed(4) : '—'}</td>
+            <td>${s.lng ? parseFloat(s.lng).toFixed(4) : '—'}</td>
+          </tr>
+        `).join('');
+      }
+
+    } catch (err) {
+      console.error('Dashboard error:', err);
+    }
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Copied: ' + text);
+    });
+  }
+
+  function emailMembers(emails) {
+    if (!emails) return;
+    window.location.href = `mailto:${emails}?subject=Your Community Ripple is filling up!`;
+  }
+
+  async function closeRipple(id) {
+    if (!confirm('Close this Ripple?')) return;
+    await fetch(`${SUPABASE_URL}/rest/v1/ripples?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: 'closed' })
+    });
+    loadDashboard();
+  }
+</script>
+</body>
+</html>
