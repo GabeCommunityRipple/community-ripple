@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/Favicon_Ripple_Logo.png">
+  <title>That Wave Has Passed — Community Ripple</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #5B8DD9;
+      --blue-dark: #3f6fbe;
+      --blue-light: #ddeaff;
+      --green: #3DAE4A;
+      --yellow: #D4E600;
+      --ink: #1a2540;
+      --muted: #6b7a9e;
+      --border: #dde6f7;
+      --off-white: #f7faff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      padding: 16px 40px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; object-fit: contain; }
+
+    .hero {
+      background: var(--ink);
+      text-align: center;
+      padding: 80px 24px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(91,141,217,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .wave-emoji {
+      font-size: 5rem;
+      display: block;
+      margin-bottom: 24px;
+      animation: sway 3s ease-in-out infinite;
+    }
+    @keyframes sway {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+    .hero h1 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: white;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 span { color: var(--yellow); }
+    .hero p {
+      color: #a0b4cc;
+      font-size: 1rem;
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    .card {
+      max-width: 520px;
+      margin: -48px auto 48px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(26,37,64,0.15);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      padding: 40px 36px;
+      text-align: center;
+    }
+
+    .good-news {
+      display: inline-block;
+      background: #f0fff4;
+      color: var(--green);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--ink);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    .start-btn {
+      display: inline-block;
+      background: var(--blue);
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      padding: 16px 36px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      margin-bottom: 16px;
+    }
+    .start-btn:hover {
+      background: var(--blue-dark);
+      transform: translateY(-2px);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+
+    .how-it-works {
+      text-align: left;
+    }
+    .how-it-works h3 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .step-num {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      border-radius: 50%;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-text strong {
+      display: block;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .step-text span {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 24px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .hero { padding: 60px 20px 80px; }
+      .card { margin: -40px 16px 32px; padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="/">
+      <img src="/logo_gill_sans_text.png" alt="Community Ripple">
+    </a>
+  </nav>
+
+  <div class="hero">
+    <span class="wave-emoji">🌊</span>
+    <h1>Sorry, that <span>wave</span><br>has passed.</h1>
+    <p>This Ripple is no longer active — it may have been fulfilled or expired.</p>
+  </div>
+
+  <div class="card">
+    <div class="good-news">✅ Good news</div>
+    <h2>You can start a brand new Ripple in your neighborhood!</h2>
+    <p>Sign up at communityripple.com, enter your address and the service you need — we'll match you with neighbors and start a new wave of savings.</p>
+
+    <a class="start-btn" href="/">Start a New Ripple →</a>
+
+    <hr class="divider">
+
+    <div class="how-it-works">
+      <h3>How it works</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <strong>Sign up with your address</strong>
+            <span>Tell us what service you need and where you live</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <strong>Neighbors get notified</strong>
+            <span>We alert nearby homeowners who need the same service</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <strong>Everyone saves together</strong>
+            <span>The more neighbors who join, the bigger the discount — up to 30% off</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Community Ripple · <a href="/legal">Terms & Privacy</a> · <a href="mailto:neighbors@communityripple.com">neighbors@communityripple.com</a></p>
+  </footer>
+
+</body>
+</html>
