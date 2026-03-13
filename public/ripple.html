@@ -568,6 +568,10 @@
         document.getElementById('join-section').style.display = 'none';
         document.getElementById('success-state').classList.add('show');
       } else {
+        if (data.error && data.error.includes('no longer active')) {
+          window.location.href = '/ripple-expired.html';
+          return;
+        }
         throw new Error(data.error || 'Something went wrong.');
       }
     } catch (err) {
