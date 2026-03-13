@@ -3,6 +3,7 @@
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/ripple/(.*)", "destination": "/ripple.html" },
     { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/legal", "destination": "/legal.html" }
+    { "source": "/legal", "destination": "/legal.html" },
+    { "source": "/ripple-expired", "destination": "/ripple-expired.html" }
   ]
 }
