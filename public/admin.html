@@ -305,6 +305,7 @@
     .action-btn:hover { opacity: 0.85; }
     .btn-share { background: var(--blue-light); color: var(--blue-dark); }
     .btn-close { background: #fff0f0; color: var(--red); }
+    .btn-export { background: #f0f4ff; color: #3f6fbe; }
     .btn-email { background: #f0fff4; color: var(--green); }
 
     /* SUBSCRIBERS TABLE */
@@ -559,6 +560,7 @@
                 <div class="ripple-actions">
                   <button class="action-btn btn-share" onclick="copyText('${rippleUrl}')">🔗 Copy Link</button>
                   <button class="action-btn btn-email" onclick="emailMembers('${memberEmails.join(',')}')">✉️ Email All</button>
+                  <button class="action-btn btn-export" onclick="exportRippleCSV('${r.id}', '${r.service_type}')">⬇️ Export CSV</button>
                   <button class="action-btn btn-close" onclick="closeRipple('${r.id}')">✕ Close</button>
                 </div>
               </div>
@@ -597,7 +599,33 @@
     if (!emails) return;
     window.location.href = `mailto:${emails}?subject=Your Community Ripple is filling up!`;
   }
+async function exportRippleCSV(rippleId, serviceType) {
+    const membersRes = await fetch(`${SUPABASE_URL}/rest/v1/ripple_members?ripple_id=eq.${rippleId}&select=subscriber_id`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const members = await membersRes.json();
+    const ids = members.map(m => m.subscriber_id);
 
+    const subsRes = await fetch(`${SUPABASE_URL}/rest/v1/subscribers?id=in.(${ids.join(',')})&select=email,address,lat,lng,zip`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const subs = await subsRes.json();
+
+    const rows = [['Email', 'Address', 'ZIP', 'Lat', 'Lng']];
+    subs.forEach(s => rows.push([s.email, s.address || '', s.zip || '', s.lat || '', s.lng || '']));
+
+    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ripple-${serviceType.replace(/\s+/g, '-').toLowerCase()}-${rippleId.slice(0,8)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function closeRipple(id) {
+  
   async function closeRipple(id) {
     if (!confirm('Close this Ripple?')) return;
     await fetch(`${SUPABASE_URL}/rest/v1/ripples?id=eq.${id}`, {
