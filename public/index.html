@@ -680,7 +680,7 @@
     <li><a href="#how">How it Works</a></li>
     <li><a href="#savings">Savings</a></li>
     <li><a href="#signup">For Contractors</a></li>
-    <li><a href="#signup" class="nav-cta">Join a Ripple →</a></li>
+    <li><a href="#signup" class="nav-cta">Get a Group Rate →</a></li>
   </ul>
 </nav>
 
@@ -705,13 +705,13 @@
 
     <div class="hero-eyebrow">
       <span class="dot"></span>
-      Ripples active in your area
+      Neighbors saving together near you
     </div>
 
-    <h1>Your neighbors are saving.<br>Want to <span class="highlight">join the Ripple?</span></h1>
+    <h1>Get a group rate on<br>home services with <span class="highlight">your neighbors.</span></h1>
 
     <p class="hero-sub">
-      Tell us what service you need. We'll find neighbors nearby who need the same thing — and get everyone a better price together.
+      Pick a service. We group you with nearby neighbors who need the same thing — one contractor, one trip, everyone saves. We call it a Ripple.
     </p>
 
     <div class="search-wrapper">
@@ -734,7 +734,7 @@
           <option>Trash Bin Cleaning</option>
           <option>Window Cleaning</option>
         </select>
-        <button class="search-btn" onclick="handleSearch()">Find a Ripple →</button>
+        <button class="search-btn" onclick="handleSearch()">Get a Group Rate →</button>
       </div>
     </div>
 
@@ -811,9 +811,9 @@
 <!-- EMAIL SIGNUP -->
 <section class="signup" id="signup">
   <div class="signup-box">
-    <div class="section-eyebrow">Get notified</div>
-    <h2>Be the first to know when a Ripple starts near you</h2>
-    <p>Enter your details below. We'll alert you the moment a neighbor starts a Ripple for a service you might need.</p>
+    <div class="section-eyebrow">Start saving today</div>
+    <h2>Lock in your spot. Get the best group rate in your neighborhood.</h2>
+    <p>Enter your address and the service you need. We'll match you with nearby neighbors, group you together, and get everyone a better deal. Your contractor shares the exact savings when your group fills.</p>
 
     <div id="signup-form-wrap">
       <div style="max-width:440px;margin:0 auto 10px;">
@@ -821,7 +821,7 @@
         <input type="text" id="address-input" placeholder="Your home address (e.g. 123 Main St, Apex, NC 27502)" style="width:100%;border:2px solid #dde6f7;border-radius:12px;padding:13px 18px;font-family:'Nunito Sans',sans-serif;font-size:0.95rem;background:white;outline:none;color:#1a2540;">
       </div>
       <div style="max-width:440px;margin:10px auto 0;">
-        <button id="signup-btn" onclick="handleSignup()" style="width:100%;background:#5B8DD9;color:white;border:none;border-radius:12px;padding:13px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;transition:background 0.2s;">Notify me →</button>
+        <button id="signup-btn" onclick="handleSignup()" style="width:100%;background:#5B8DD9;color:white;border:none;border-radius:12px;padding:13px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;transition:background 0.2s;">Start My Ripple →</button>
       </div>
       <p class="signup-note">Your address matches you with nearby Ripples only. Never shared publicly.</p>
     </div>
@@ -852,7 +852,7 @@
     <img src="/Ripple_Logo_Final.png" alt="Logo">
     <span>Community <em>Ripple</em></span>
   </div>
-  <p>© 2025 Community Ripple · communityripple.com · <a href="/legal" style="color:#6b7a9e;text-decoration:none;">Terms & Privacy</a></p>
+  <p>© 2025 Community Ripple · communityripple.com · <a href="tel:8779780511" style="color:#6b7a9e;text-decoration:none;">(877) 978-0511</a> · <a href="/legal" style="color:#6b7a9e;text-decoration:none;">Terms & Privacy</a></p>
   <div class="footer-dots">
     <div class="footer-dot" style="background:#5B8DD9;"></div>
     <div class="footer-dot" style="background:#3DAE4A;"></div>
@@ -922,7 +922,7 @@
     if (!address) { showFormError('Please enter your home address.'); return; }
 
     const btn = document.getElementById('signup-btn');
-    btn.textContent = 'Joining…';
+    btn.textContent = 'Starting your Ripple…';
     btn.disabled = true;
 
     try {
@@ -950,7 +950,7 @@
         throw new Error(data.error || 'Something went wrong.');
       }
     } catch (err) {
-      btn.textContent = 'Notify me →';
+      btn.textContent = 'Start My Ripple →';
       btn.disabled = false;
       showFormError('Oops — ' + err.message + ' Please try again.');
     }
