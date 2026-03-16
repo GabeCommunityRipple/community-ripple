@@ -425,10 +425,9 @@
         <thead>
           <tr>
             <th>Email</th>
+            <th>Address</th>
             <th>Service Interest</th>
             <th>ZIP</th>
-            <th>Lat</th>
-            <th>Lng</th>
           </tr>
         </thead>
         <tbody id="subscribers-table">
@@ -576,10 +575,9 @@
         tbody.innerHTML = subscribers.map(s => `
           <tr>
             <td>${s.email}</td>
+            <td>${s.address || '—'}</td>
             <td>${s.service_interest || '—'}</td>
             <td>${s.zip || '—'}</td>
-            <td>${s.lat ? parseFloat(s.lat).toFixed(4) : '—'}</td>
-            <td>${s.lng ? parseFloat(s.lng).toFixed(4) : '—'}</td>
           </tr>
         `).join('');
       }
