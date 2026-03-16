@@ -77,7 +77,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'Prefer': 'resolution=merge-duplicates'
       },
-      body: JSON.stringify({ email, zip, lat, lng, service_interest: ripple.service_type || 'Not specified' })
+      body: JSON.stringify({ email, zip, lat, lng, address: formattedAddress, service_interest: ripple.service_type || 'Not specified' })
     });
 
     // 6. Fetch subscriber ID
