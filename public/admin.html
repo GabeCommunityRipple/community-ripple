@@ -560,7 +560,7 @@
                 <div class="ripple-actions">
                   <button class="action-btn btn-share" onclick="copyText('${rippleUrl}')">🔗 Copy Link</button>
                   <button class="action-btn btn-email" onclick="emailMembers('${memberEmails.join(',')}')">✉️ Email All</button>
-                  <button class="action-btn btn-export" onclick="exportRippleCSV('${r.id}', '${r.service_type}')">⬇️ Export CSV</button>
+                  <button class="action-btn btn-export" data-id="${r.id}" data-service="${r.service_type.replace(/'/g, '').replace(/\//g, '-')}" onclick="exportRippleCSV(this.dataset.id, this.dataset.service)">⬇️ Export CSV</button>
                   <button class="action-btn btn-close" onclick="closeRipple('${r.id}')">✕ Close</button>
                 </div>
               </div>
