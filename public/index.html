@@ -702,7 +702,23 @@
     <div class="search-wrapper">
       <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="service-input" placeholder="What service do you need? (e.g. gutter cleaning)" autocomplete="off">
+        <select id="service-input" style="flex:1;border:none;background:transparent;font-family:'Nunito Sans',sans-serif;font-size:1rem;color:#1a2540;outline:none;cursor:pointer;padding:0 8px;">
+          <option value="" disabled selected>What service do you need?</option>
+          <option>Driveway Paving/Sealing</option>
+          <option>Dryer Vent Cleaning</option>
+          <option>Gutter Cleaning</option>
+          <option>HVAC Tuneup</option>
+          <option>Lawn Aeration</option>
+          <option>Lawn Fertilization</option>
+          <option>Mobile Car Wash</option>
+          <option>Mosquito Treatment</option>
+          <option>Mulch Delivery</option>
+          <option>Mulch Installation</option>
+          <option>Pest Control</option>
+          <option>Pressure Washing</option>
+          <option>Trash Bin Cleaning</option>
+          <option>Window Cleaning</option>
+        </select>
         <button class="search-btn" onclick="handleSearch()">Find a Ripple →</button>
       </div>
     </div>
