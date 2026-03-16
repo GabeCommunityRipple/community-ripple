@@ -64,7 +64,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'Prefer': 'resolution=merge-duplicates'
       },
-      body: JSON.stringify({ email, zip, lat, lng, service_interest: service || 'Not specified' })
+      body: JSON.stringify({ email, zip, lat, lng, address: formattedAddress, service_interest: service || 'Not specified' })
     });
 
     // Fetch subscriber by email to get their ID
