@@ -28,8 +28,6 @@
       color: var(--ink);
       min-height: 100vh;
     }
-
-    /* LOGIN */
     .login-screen {
       min-height: 100vh;
       display: flex;
@@ -47,13 +45,7 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
     .login-box img { height: 48px; margin-bottom: 20px; }
-    .login-box h2 {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 1.4rem;
-      color: var(--ink);
-      margin-bottom: 6px;
-    }
+    .login-box h2 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--ink); margin-bottom: 6px; }
     .login-box p { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
     .login-box input {
       width: 100%;
@@ -84,17 +76,8 @@
       transition: background 0.2s;
     }
     .login-btn:hover { background: var(--blue-dark); }
-    .login-error {
-      color: var(--red);
-      font-size: 0.82rem;
-      margin-top: 10px;
-      display: none;
-    }
-
-    /* DASHBOARD */
+    .login-error { color: var(--red); font-size: 0.82rem; margin-top: 10px; display: none; }
     .dashboard { display: none; }
-
-    /* NAV */
     nav {
       background: var(--ink);
       padding: 16px 32px;
@@ -104,249 +87,54 @@
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; }
     .nav-logo img { height: 32px; }
-    .nav-logo span {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      color: white;
-      font-size: 1rem;
-    }
-    .nav-badge {
-      background: var(--red);
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 3px 10px;
-      border-radius: 50px;
-      letter-spacing: 0.05em;
-    }
-    .logout-btn {
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 7px 14px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* MAIN */
+    .nav-logo span { font-family: 'Nunito', sans-serif; font-weight: 900; color: white; font-size: 1rem; }
+    .nav-badge { background: var(--red); color: white; font-size: 0.7rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; letter-spacing: 0.05em; }
+    .logout-btn { background: rgba(255,255,255,0.1); color: white; border: none; border-radius: 8px; padding: 7px 14px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
     .main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
-
-    /* STATS ROW */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .stat-card {
-      background: white;
-      border-radius: 16px;
-      padding: 20px 24px;
-      border: 1.5px solid var(--border);
-    }
-    .stat-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }
-    .stat-num {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 2rem;
-      color: var(--ink);
-      line-height: 1;
-    }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: white; border-radius: 16px; padding: 20px 24px; border: 1.5px solid var(--border); }
+    .stat-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .stat-num { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 2rem; color: var(--ink); line-height: 1; }
     .stat-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
-
-    /* SECTION */
-    .section-title {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 1.1rem;
-      color: var(--ink);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .section-title .count-badge {
-      background: var(--blue-light);
-      color: var(--blue-dark);
-      font-size: 0.75rem;
-      font-weight: 800;
-      padding: 3px 10px;
-      border-radius: 50px;
-    }
-
-    /* RIPPLE CARDS */
-    .ripples-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 16px;
-      margin-bottom: 40px;
-    }
-    .ripple-card {
-      background: white;
-      border-radius: 16px;
-      border: 1.5px solid var(--border);
-      overflow: hidden;
-    }
-    .ripple-card-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .ripple-service {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 1rem;
-      color: var(--ink);
-    }
-    .ripple-status {
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 3px 10px;
-      border-radius: 50px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+    .section-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.1rem; color: var(--ink); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .section-title .count-badge { background: var(--blue-light); color: var(--blue-dark); font-size: 0.75rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; }
+    .ripples-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-bottom: 40px; }
+    .ripple-card { background: white; border-radius: 16px; border: 1.5px solid var(--border); overflow: hidden; }
+    .ripple-card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .ripple-service { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; color: var(--ink); }
+    .ripple-status { font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.05em; }
     .status-open { background: #f0fff4; color: var(--green); }
     .status-closed { background: #fff0f0; color: var(--red); }
-
     .ripple-card-body { padding: 16px 20px; }
-    .ripple-meta {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .meta-item { }
-    .meta-label {
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 2px;
-    }
-    .meta-value {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 0.95rem;
-      color: var(--ink);
-    }
-    .discount-pill {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 50px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 0.82rem;
-    }
+    .ripple-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .meta-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+    .meta-value { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--ink); }
+    .discount-pill { display: inline-block; padding: 4px 12px; border-radius: 50px; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.82rem; }
     .discount-0 { background: #f0f4f8; color: var(--muted); }
     .discount-10 { background: var(--blue-light); color: var(--blue-dark); }
     .discount-18 { background: #f0fff4; color: var(--green); }
     .discount-25 { background: #fff8e6; color: #b45309; }
     .discount-30 { background: #fffde6; color: #7a6000; }
-
-    .members-list {
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
-    }
-    .members-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }
-    .member-email {
-      font-size: 0.82rem;
-      color: var(--ink);
-      padding: 4px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    .members-list { border-top: 1px solid var(--border); padding-top: 12px; }
+    .members-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .member-email { font-size: 0.82rem; color: var(--ink); padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
     .member-email:last-child { border-bottom: none; }
-    .email-copy {
-      background: none;
-      border: none;
-      color: var(--blue);
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 2px 6px;
-    }
-
-    .ripple-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    .action-btn {
-      flex: 1;
-      padding: 8px;
-      border-radius: 8px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 0.78rem;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.2s;
-    }
+    .email-copy { background: none; border: none; color: var(--blue); font-size: 0.72rem; font-weight: 700; cursor: pointer; padding: 2px 6px; }
+    .ripple-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .action-btn { flex: 1; padding: 8px; border-radius: 8px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.78rem; cursor: pointer; border: none; transition: opacity 0.2s; }
     .action-btn:hover { opacity: 0.85; }
     .btn-share { background: var(--blue-light); color: var(--blue-dark); }
     .btn-close { background: #fff0f0; color: var(--red); }
     .btn-export { background: #f0f4ff; color: #3f6fbe; }
     .btn-email { background: #f0fff4; color: var(--green); }
-
-    /* SUBSCRIBERS TABLE */
-    .table-wrap {
-      background: white;
-      border-radius: 16px;
-      border: 1.5px solid var(--border);
-      overflow: hidden;
-      margin-bottom: 40px;
-    } 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
+    .table-wrap { background: white; border-radius: 16px; border: 1.5px solid var(--border); overflow: hidden; margin-bottom: 40px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     thead tr { background: var(--off-white); }
-    th {
-      padding: 12px 16px;
-      text-align: left;
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border-bottom: 1px solid var(--border);
-    }
-    td {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      color: var(--ink);
-    }
+    th { padding: 12px 16px; text-align: left; font-size: 0.72rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--ink); }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--off-white); }
-
-    .loading-text {
-      text-align: center;
-      padding: 40px;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
+    .loading-text { text-align: center; padding: 40px; color: var(--muted); font-size: 0.9rem; }
     @media (max-width: 768px) {
       .stats-row { grid-template-columns: repeat(2, 1fr); }
       .ripples-grid { grid-template-columns: 1fr; }
@@ -357,7 +145,6 @@
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <img src="/logo_gill_sans_text.png" alt="Community Ripple">
@@ -369,9 +156,7 @@
   </div>
 </div>
 
-<!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
-
   <nav>
     <div class="nav-logo">
       <img src="/logo_gill_sans_text.png" alt="Community Ripple">
@@ -382,61 +167,29 @@
   </nav>
 
   <div class="main">
-
-    <!-- STATS -->
     <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-label">Total Ripples</div>
-        <div class="stat-num" id="stat-ripples">—</div>
-        <div class="stat-sub">all time</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Open Ripples</div>
-        <div class="stat-num" id="stat-open">—</div>
-        <div class="stat-sub">active now</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Subscribers</div>
-        <div class="stat-num" id="stat-subscribers">—</div>
-        <div class="stat-sub">homeowners</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Avg Ripple Size</div>
-        <div class="stat-num" id="stat-avg">—</div>
-        <div class="stat-sub">neighbors per ripple</div>
-      </div>
+      <div class="stat-card"><div class="stat-label">Total Ripples</div><div class="stat-num" id="stat-ripples">—</div><div class="stat-sub">all time</div></div>
+      <div class="stat-card"><div class="stat-label">Open Ripples</div><div class="stat-num" id="stat-open">—</div><div class="stat-sub">active now</div></div>
+      <div class="stat-card"><div class="stat-label">Total Subscribers</div><div class="stat-num" id="stat-subscribers">—</div><div class="stat-sub">homeowners</div></div>
+      <div class="stat-card"><div class="stat-label">Avg Ripple Size</div><div class="stat-num" id="stat-avg">—</div><div class="stat-sub">neighbors per ripple</div></div>
     </div>
 
-    <!-- ACTIVE RIPPLES -->
-    <div class="section-title">
-      🌊 Active Ripples
-      <span class="count-badge" id="ripple-count-badge">loading...</span>
-    </div>
-    <div class="ripples-grid" id="ripples-grid">
-      <div class="loading-text">Loading ripples...</div>
-    </div>
+    <div class="section-title">🌊 Active Ripples<span class="count-badge" id="ripple-count-badge">loading...</span></div>
+    <div class="ripples-grid" id="ripples-grid"><div class="loading-text">Loading ripples...</div></div>
 
-    <!-- SUBSCRIBERS -->
-    <div class="section-title">
-      👥 All Subscribers
-      <span class="count-badge" id="sub-count-badge">loading...</span>
-    </div>
+    <div class="section-title">👥 All Subscribers<span class="count-badge" id="sub-count-badge">loading...</span></div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Service Interest</th>
-            <th>ZIP</th>
+            <th>Email</th><th>Address</th><th>Service Interest</th><th>ZIP</th>
           </tr>
         </thead>
         <tbody id="subscribers-table">
-          <tr><td colspan="5" class="loading-text">Loading subscribers...</td></tr>
+          <tr><td colspan="4" class="loading-text">Loading subscribers...</td></tr>
         </tbody>
       </table>
     </div>
-
   </div>
 </div>
 
@@ -485,7 +238,6 @@
         db('ripple_members', '?select=*')
       ]);
 
-      // Stats
       const openRipples = ripples.filter(r => r.status === 'open');
       const avgSize = ripples.length > 0
         ? (ripples.reduce((sum, r) => sum + (r.member_count || 0), 0) / ripples.length).toFixed(1)
@@ -498,18 +250,15 @@
       document.getElementById('ripple-count-badge').textContent = `${openRipples.length} open`;
       document.getElementById('sub-count-badge').textContent = `${subscribers.length} total`;
 
-      // Build subscriber lookup by ID
       const subById = {};
       subscribers.forEach(s => { subById[s.id] = s; });
 
-      // Build members by ripple
       const membersByRipple = {};
       members.forEach(m => {
         if (!membersByRipple[m.ripple_id]) membersByRipple[m.ripple_id] = [];
         membersByRipple[m.ripple_id].push(m.subscriber_id);
       });
 
-      // Render ripples
       const grid = document.getElementById('ripples-grid');
       if (ripples.length === 0) {
         grid.innerHTML = '<div class="loading-text">No ripples yet.</div>';
@@ -519,6 +268,7 @@
           const memberIds = membersByRipple[r.id] || [];
           const memberEmails = memberIds.map(id => subById[id]?.email).filter(Boolean);
           const rippleUrl = `https://communityripple.com/ripple/${r.id}`;
+          const safeService = (r.service_type || '').replace(/'/g, '').replace(/\//g, '-');
 
           return `
             <div class="ripple-card">
@@ -560,7 +310,7 @@
                 <div class="ripple-actions">
                   <button class="action-btn btn-share" onclick="copyText('${rippleUrl}')">🔗 Copy Link</button>
                   <button class="action-btn btn-email" onclick="emailMembers('${memberEmails.join(',')}')">✉️ Email All</button>
-                  <button class="action-btn btn-export" data-id="${r.id}" data-service="${r.service_type.replace(/'/g, '').replace(/\//g, '-')}" onclick="exportRippleCSV(this.dataset.id, this.dataset.service)">⬇️ Export CSV</button>
+                  <button class="action-btn btn-export" data-id="${r.id}" data-service="${safeService}" onclick="exportRippleCSV(this.dataset.id, this.dataset.service)">⬇️ Export CSV</button>
                   <button class="action-btn btn-close" onclick="closeRipple('${r.id}')">✕ Close</button>
                 </div>
               </div>
@@ -569,10 +319,9 @@
         }).join('');
       }
 
-      // Render subscribers table
       const tbody = document.getElementById('subscribers-table');
       if (subscribers.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="loading-text">No subscribers yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="loading-text">No subscribers yet.</td></tr>';
       } else {
         tbody.innerHTML = subscribers.map(s => `
           <tr>
@@ -599,33 +348,38 @@
     if (!emails) return;
     window.location.href = `mailto:${emails}?subject=Your Community Ripple is filling up!`;
   }
-async function exportRippleCSV(rippleId, serviceType) {
-    const membersRes = await fetch(`${SUPABASE_URL}/rest/v1/ripple_members?ripple_id=eq.${rippleId}&select=subscriber_id`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-    });
-    const members = await membersRes.json();
-    const ids = members.map(m => m.subscriber_id);
 
-    const subsRes = await fetch(`${SUPABASE_URL}/rest/v1/subscribers?id=in.(${ids.join(',')})&select=email,address,lat,lng,zip`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-    });
-    const subs = await subsRes.json();
+  async function exportRippleCSV(rippleId, serviceType) {
+    try {
+      const membersRes = await fetch(`${SUPABASE_URL}/rest/v1/ripple_members?ripple_id=eq.${rippleId}&select=subscriber_id`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const members = await membersRes.json();
+      const ids = members.map(m => m.subscriber_id);
 
-    const rows = [['Email', 'Address', 'ZIP', 'Lat', 'Lng']];
-    subs.forEach(s => rows.push([s.email, s.address || '', s.zip || '', s.lat || '', s.lng || '']));
+      if (ids.length === 0) { alert('No members found for this Ripple.'); return; }
 
-    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `ripple-${serviceType.replace(/\s+/g, '-').toLowerCase()}-${rippleId.slice(0,8)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+      const subsRes = await fetch(`${SUPABASE_URL}/rest/v1/subscribers?id=in.(${ids.join(',')})&select=email,address,lat,lng,zip`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const subs = await subsRes.json();
+
+      const rows = [['Email', 'Address', 'ZIP', 'Lat', 'Lng']];
+      subs.forEach(s => rows.push([s.email || '', s.address || '', s.zip || '', s.lat || '', s.lng || '']));
+
+      const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ripple-${serviceType.replace(/\s+/g, '-').toLowerCase()}-${rippleId.slice(0,8)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Export failed: ' + err.message);
+    }
   }
 
-  async function closeRipple(id) {
-  
   async function closeRipple(id) {
     if (!confirm('Close this Ripple?')) return;
     await fetch(`${SUPABASE_URL}/rest/v1/ripples?id=eq.${id}`, {
