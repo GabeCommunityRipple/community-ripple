@@ -703,9 +703,9 @@
   <div class="float-dot" style="width:10px;height:10px;border:3px solid #3DAE4A;top:60%;left:18%;animation-delay:0.7s;opacity:0.5;"></div>
   <div class="float-dot" style="width:16px;height:16px;border:3px solid #D4E600;top:55%;right:16%;animation-delay:2.5s;opacity:0.5;"></div>
 
-    <div class="hero-eyebrow">
+    <div class="hero-eyebrow" id="hero-eyebrow">
       <span class="dot"></span>
-      Neighbors saving together near you
+      <span id="eyebrow-text">Neighbors saving together near you</span>
     </div>
 
     <h1>Get a group rate on<br>home services with <span class="highlight">your neighbors.</span></h1>
@@ -874,6 +874,17 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiN1tOJuN8stsCU1YirTSvh6uKyxOHIAM&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
+  // Door tag QR detection
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('ref') === 'doortag') {
+    document.getElementById('eyebrow-text').textContent = 'Ripples are forming in your neighborhood right now';
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;top:70px;left:0;right:0;background:#3DAE4A;color:white;text-align:center;padding:10px 20px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.88rem;z-index:99;';
+    banner.innerHTML = '🌊 Welcome neighbor! Enter your address below to see active Ripples near you →';
+    document.body.appendChild(banner);
+    setTimeout(() => document.getElementById('signup').scrollIntoView({ behavior: 'smooth' }), 800);
+  }
+
   // Initialize Google Places Autocomplete
   function initAutocomplete() {
     const input = document.getElementById('address-input');
@@ -889,7 +900,6 @@
       }
     });
   }
-
   // Hint chips
   function fillSearch(val) {
     const select = document.getElementById('service-input');
