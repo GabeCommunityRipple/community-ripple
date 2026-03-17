@@ -892,8 +892,13 @@
 
   // Hint chips
   function fillSearch(val) {
-    document.getElementById('service-input').value = val;
-    document.getElementById('service-input').focus();
+    const select = document.getElementById('service-input');
+    for (let i = 0; i < select.options.length; i++) {
+      if (select.options[i].value.toLowerCase().includes(val.toLowerCase())) {
+        select.selectedIndex = i;
+        break;
+      }
+    }
   }
 
   // Search handler
