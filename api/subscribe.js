@@ -29,7 +29,7 @@ export default async function handler(req, res) {
           event: {
             token: recaptcha_token,
             expectedAction: 'SIGNUP',
-            siteKey: '6LcaY5AsAAAAALeWq5amWfRz6cDL75RYTtKrdv7S'
+            siteKey: '6LcbBhEcAAAAAMNHi3Bu-3OUfrfANcFcSfE7qc6j'
           }
         })
       });
