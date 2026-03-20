@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
     // 1. Verify reCAPTCHA token
     if (recaptchaSecret && recaptcha_token) {
-      const captchaRes = await fetch('https://recaptchaenterprise.googleapis.com/v1/projects/community-ripple/assessments?key=' + recaptchaSecret, {
+      const captchaRes = await fetch('https://recaptchaenterprise.googleapis.com/v1/projects/recaptcha-migrated-a6af9b73630/assessments?key=' + recaptchaSecret, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
