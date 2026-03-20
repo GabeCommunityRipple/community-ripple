@@ -412,9 +412,16 @@
     btn.disabled = true;
 
     try {
-      // reCAPTCHA v3 token
-      const token = await new Promise((resolve) => {
-        grecaptcha.enterprise.ready(async () => {
+      // reCAPTCHA v3 token — with fallback if not loaded
+      let token = null;
+      if (typeof grecaptcha !== 'undefined' && grecaptcha.enterprise) {
+        token = await new Promise((resolve) => {
+          grecaptcha.enterprise.ready(async () => {
+            const t = await grecaptcha.enterprise.execute('6LcbBHEcAAAAMNHI3Bu-3OUfrfANcFcSfE7qc6j', { action: 'SIGNUP' });
+            resolve(t);
+          });
+        });
+      }
           const t = await grecaptcha.enterprise.execute('6LcbBhEcAAAAAMNHi3Bu-3OUfrfANcFcSfE7qc6j', { action: 'SIGNUP' });
           resolve(t);
         });
