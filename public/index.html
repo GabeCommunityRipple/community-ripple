@@ -351,7 +351,6 @@
   <button class="toast-join" onclick="dismissToast()">Join →</button>
 </div>
 
-<script src="https://www.google.com/recaptcha/enterprise.js?render=6LcbBhEcAAAAAMNHi3Bu-3OUfrfANcFcSfE7qc6j" async defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiN1tOJuN8stsCU1YirTSvh6uKyxOHIAM&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
   // Door tag QR detection
@@ -411,21 +410,7 @@
     btn.textContent = 'Starting your Ripple…';
     btn.disabled = true;
 
-    try {
-      // reCAPTCHA v3 token — with fallback if not loaded
-      let token = null;
-      if (typeof grecaptcha !== 'undefined' && grecaptcha.enterprise) {
-        token = await new Promise((resolve) => {
-          grecaptcha.enterprise.ready(async () => {
-            const t = await grecaptcha.enterprise.execute('6LcbBHEcAAAAMNHI3Bu-3OUfrfANcFcSfE7qc6j', { action: 'SIGNUP' });
-            resolve(t);
-          });
-        });
-      }
-          const t = await grecaptcha.enterprise.execute('6LcbBhEcAAAAAMNHi3Bu-3OUfrfANcFcSfE7qc6j', { action: 'SIGNUP' });
-          resolve(t);
-        });
-      });
+    let token = null;
 
       const response = await fetch('/api/subscribe', {
         method: 'POST',
