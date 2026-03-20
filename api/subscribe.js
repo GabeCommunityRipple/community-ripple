@@ -22,19 +22,13 @@ export default async function handler(req, res) {
 
     // 1. Verify reCAPTCHA token
     if (recaptchaSecret && recaptcha_token) {
-      const captchaRes = await fetch('https://recaptchaenterprise.googleapis.com/v1/projects/recaptcha-migrated-a6af9b73630/assessments?key=' + recaptchaSecret, {
+      const captchaRes = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          event: {
-            token: recaptcha_token,
-            expectedAction: 'SIGNUP',
-            siteKey: '6LcbBhEcAAAAAMNHi3Bu-3OUfrfANcFcSfE7qc6j'
-          }
-        })
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${recaptchaSecret}&response=${recaptcha_token}`
       });
       const captchaData = await captchaRes.json();
-      const score = captchaData?.riskAnalysis?.score ?? captchaData?.score ?? 1;
+      const score = captchaData?.score ?? 1;
       console.log('reCAPTCHA score:', score);
       if (score < 0.5) {
         return res.status(400).json({ error: 'Spam detected. Please try again.' });
