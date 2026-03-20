@@ -11,7 +11,7 @@
 <meta property="og:url" content="https://communityripple.com">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://communityripple.com/og-image.jpg">  
+<meta name="twitter:image" content="https://communityripple.com/og-image.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -28,19 +28,14 @@
     --muted: #6b7a9e;
     --border: #dde6f7;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
   body {
     font-family: 'Nunito Sans', sans-serif;
     background: var(--off-white);
     color: var(--ink);
     overflow-x: hidden;
   }
-
-  /* ---- NAV ---- */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -53,52 +48,15 @@
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
-  .nav-logo img {
-    width: 38px;
-    height: 38px;
-    object-fit: contain;
-  }
-  .nav-logo span {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 1.2rem;
-    color: var(--ink);
-    letter-spacing: -0.3px;
-  }
-  .nav-logo span em {
-    color: var(--blue);
-    font-style: normal;
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-    list-style: none;
-  }
-  .nav-links a {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo img { width: 38px; height: 38px; object-fit: contain; }
+  .nav-logo span { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--ink); letter-spacing: -0.3px; }
+  .nav-logo span em { color: var(--blue); font-style: normal; }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { font-size: 0.88rem; font-weight: 600; color: var(--muted); text-decoration: none; transition: color 0.2s; }
   .nav-links a:hover { color: var(--blue); }
-  .nav-cta {
-    background: var(--blue);
-    color: white !important;
-    padding: 8px 20px;
-    border-radius: 50px;
-    transition: background 0.2s !important;
-  }
+  .nav-cta { background: var(--blue); color: white !important; padding: 8px 20px; border-radius: 50px; transition: background 0.2s !important; }
   .nav-cta:hover { background: var(--blue-dark) !important; color: white !important; }
-
-  /* ---- HERO ---- */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -110,574 +68,103 @@
     overflow: hidden;
     text-align: center;
   }
-
-  /* Animated ripple background */
-  .hero-ripples {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 0;
-  }
-  .hero-ripples .r {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    border: 2px solid var(--blue);
-    animation: heroRipple 4s ease-out infinite;
-    opacity: 0;
-  }
+  .hero-ripples { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 0; }
+  .hero-ripples .r { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid var(--blue); animation: heroRipple 4s ease-out infinite; opacity: 0; }
   .hero-ripples .r:nth-child(1) { width: 200px; height: 200px; animation-delay: 0s; }
   .hero-ripples .r:nth-child(2) { width: 380px; height: 380px; animation-delay: 0.8s; }
   .hero-ripples .r:nth-child(3) { width: 560px; height: 560px; animation-delay: 1.6s; }
   .hero-ripples .r:nth-child(4) { width: 740px; height: 740px; animation-delay: 2.4s; }
   .hero-ripples .r:nth-child(5) { width: 920px; height: 920px; animation-delay: 3.2s; }
-
-  @keyframes heroRipple {
-    0% { opacity: 0.5; transform: translate(-50%,-50%) scale(0.6); }
-    100% { opacity: 0; transform: translate(-50%,-50%) scale(1); }
-  }
-
-  /* Floating dots */
-  .float-dot {
-    position: absolute;
-    border-radius: 50%;
-    animation: floatDot 6s ease-in-out infinite;
-    pointer-events: none;
-  }
-  @keyframes floatDot {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-14px); }
-  }
-
-  .hero-inner {
-    position: relative;
-    z-index: 1;
-    max-width: 720px;
-  }
-  .hero-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin-bottom: 20px;
-    animation: popIn 0.6s cubic-bezier(.34,1.56,.64,1) both;
-  }
-  @keyframes popIn {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--blue-light);
-    color: var(--blue-dark);
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 50px;
-    margin-bottom: 22px;
-    animation: fadeUp 0.5s 0.2s both;
-  }
-  .hero-eyebrow .dot {
-    width: 7px; height: 7px;
-    background: var(--green);
-    border-radius: 50%;
-    animation: blink 1.5s ease-in-out infinite;
-  }
+  @keyframes heroRipple { 0% { opacity: 0.5; transform: translate(-50%,-50%) scale(0.6); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1); } }
+  .float-dot { position: absolute; border-radius: 50%; animation: floatDot 6s ease-in-out infinite; pointer-events: none; }
+  @keyframes floatDot { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-14px); } }
+  .hero-inner { position: relative; z-index: 1; max-width: 720px; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--blue-light); color: var(--blue-dark); font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 16px; border-radius: 50px; margin-bottom: 22px; animation: fadeUp 0.5s 0.2s both; }
+  .hero-eyebrow .dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: blink 1.5s ease-in-out infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  h1 {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-    line-height: 1.1;
-    color: var(--ink);
-    letter-spacing: -1px;
-    margin-bottom: 20px;
-    animation: fadeUp 0.5s 0.3s both;
-  }
-  h1 .highlight {
-    color: var(--blue);
-    position: relative;
-    display: inline-block;
-  }
-  h1 .highlight::after {
-    content: '';
-    position: absolute;
-    bottom: 2px; left: 0; right: 0;
-    height: 4px;
-    background: var(--yellow);
-    border-radius: 2px;
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: underlineIn 0.5s 0.9s cubic-bezier(.4,0,.2,1) forwards;
-  }
+  h1 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.1; color: var(--ink); letter-spacing: -1px; margin-bottom: 20px; animation: fadeUp 0.5s 0.3s both; }
+  h1 .highlight { color: var(--blue); position: relative; display: inline-block; }
+  h1 .highlight::after { content: ''; position: absolute; bottom: 2px; left: 0; right: 0; height: 4px; background: var(--yellow); border-radius: 2px; transform: scaleX(0); transform-origin: left; animation: underlineIn 0.5s 0.9s cubic-bezier(.4,0,.2,1) forwards; }
   @keyframes underlineIn { to { transform: scaleX(1); } }
-
-  .hero-sub {
-    font-size: 1.1rem;
-    color: var(--muted);
-    line-height: 1.7;
-    max-width: 540px;
-    margin: 0 auto 40px;
-    font-weight: 400;
-    animation: fadeUp 0.5s 0.4s both;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ---- SEARCH BOX ---- */
-  .search-wrapper {
-    animation: fadeUp 0.5s 0.5s both;
-    width: 100%;
-    max-width: 580px;
-    margin: 0 auto 18px;
-  }
-  .search-box {
-    display: flex;
-    align-items: center;
-    background: white;
-    border: 2.5px solid var(--border);
-    border-radius: 18px;
-    padding: 8px 8px 8px 22px;
-    gap: 10px;
-    box-shadow: 0 8px 30px rgba(91,141,217,0.15);
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .search-box:focus-within {
-    border-color: var(--blue);
-    box-shadow: 0 8px 30px rgba(91,141,217,0.25);
-  }
-  .search-icon {
-    font-size: 1.3rem;
-    flex-shrink: 0;
-  }
-  .search-box input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-family: 'Nunito Sans', sans-serif;
-    font-size: 1rem;
-    color: var(--ink);
-    background: transparent;
-    font-weight: 600;
-  }
-  .search-box input::placeholder { color: #b0bcd4; font-weight: 400; }
-  .search-btn {
-    background: var(--blue);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 12px 24px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
+  .hero-sub { font-size: 1.1rem; color: var(--muted); line-height: 1.7; max-width: 540px; margin: 0 auto 40px; font-weight: 400; animation: fadeUp 0.5s 0.4s both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .search-wrapper { animation: fadeUp 0.5s 0.5s both; width: 100%; max-width: 580px; margin: 0 auto 18px; }
+  .search-box { display: flex; align-items: center; background: white; border: 2.5px solid var(--border); border-radius: 18px; padding: 8px 8px 8px 22px; gap: 10px; box-shadow: 0 8px 30px rgba(91,141,217,0.15); transition: border-color 0.2s, box-shadow 0.2s; }
+  .search-box:focus-within { border-color: var(--blue); box-shadow: 0 8px 30px rgba(91,141,217,0.25); }
+  .search-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .search-btn { background: var(--blue); color: white; border: none; border-radius: 12px; padding: 12px 24px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: background 0.2s, transform 0.15s; white-space: nowrap; flex-shrink: 0; }
   .search-btn:hover { background: var(--blue-dark); transform: scale(1.03); }
   .search-btn:active { transform: scale(0.98); }
   @media (max-width: 520px) {
-    .search-box {
-      flex-wrap: wrap;
-      padding: 12px 16px;
-    }
-    .search-box select {
-      width: 100%;
-      flex: none;
-    }
-    .search-btn {
-      width: 100%;
-      text-align: center;
-    }
+    .search-box { flex-wrap: wrap; padding: 12px 16px; }
+    .search-box select { width: 100%; flex: none; }
+    .search-btn { width: 100%; text-align: center; }
     .search-icon { display: none; }
   }
-
-  .search-hints {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    animation: fadeUp 0.5s 0.6s both;
-  }
-  .hint-chip {
-    background: white;
-    border: 1.5px solid var(--border);
-    color: var(--muted);
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 5px 13px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s, background 0.2s;
-  }
-  .hint-chip:hover {
-    border-color: var(--blue);
-    color: var(--blue);
-    background: var(--blue-light);
-  }
-
-  /* ---- LIVE RIPPLE TOAST ---- */
-  .ripple-toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--ink);
-    color: white;
-    border-radius: 16px;
-    padding: 16px 22px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-    z-index: 200;
-    max-width: 420px;
-    width: 90%;
-    transition: transform 0.5s cubic-bezier(.34,1.56,.64,1);
-  }
+  .search-hints { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; animation: fadeUp 0.5s 0.6s both; }
+  .hint-chip { background: white; border: 1.5px solid var(--border); color: var(--muted); font-size: 0.78rem; font-weight: 600; padding: 5px 13px; border-radius: 50px; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+  .hint-chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+  .ripple-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--ink); color: white; border-radius: 16px; padding: 16px 22px; display: flex; align-items: center; gap: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); z-index: 200; max-width: 420px; width: 90%; transition: transform 0.5s cubic-bezier(.34,1.56,.64,1); }
   .ripple-toast.show { transform: translateX(-50%) translateY(0); }
-  .toast-icon {
-    width: 40px; height: 40px;
-    background: var(--blue);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
-    flex-shrink: 0;
-  }
+  .toast-icon { width: 40px; height: 40px; background: var(--blue); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
   .toast-text { flex: 1; }
   .toast-text strong { display: block; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.88rem; margin-bottom: 2px; }
   .toast-text span { font-size: 0.78rem; color: #a0aec0; line-height: 1.4; }
-  .toast-join {
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 0.78rem;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: opacity 0.2s;
-  }
+  .toast-join { background: var(--green); color: white; border: none; border-radius: 8px; padding: 8px 14px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.78rem; cursor: pointer; flex-shrink: 0; transition: opacity 0.2s; }
   .toast-join:hover { opacity: 0.85; }
-
-  /* ---- HOW IT WORKS ---- */
-  .how {
-    background: white;
-    padding: 90px 24px;
-  }
-  .how-inner {
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  .section-eyebrow {
-    text-align: center;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 12px;
-  }
-  .section-title {
-    text-align: center;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    color: var(--ink);
-    letter-spacing: -0.5px;
-    margin-bottom: 56px;
-    line-height: 1.2;
-  }
-
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .step-card {
-    background: var(--off-white);
-    border-radius: 20px;
-    padding: 30px 26px;
-    position: relative;
-    border: 1.5px solid var(--border);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .step-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(91,141,217,0.12);
-  }
-  .step-num-badge {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 0.95rem;
-    color: white;
-    margin-bottom: 16px;
-  }
-  .step-card h3 {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 1rem;
-    margin-bottom: 8px;
-    color: var(--ink);
-  }
-  .step-card p {
-    font-size: 0.86rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  /* ---- SAVINGS SECTION ---- */
-  .savings {
-    padding: 90px 24px;
-    background: var(--ink);
-    color: white;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .savings::before {
-    content: '';
-    position: absolute;
-    top: -200px; left: 50%;
-    transform: translateX(-50%);
-    width: 700px; height: 700px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(91,141,217,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
+  .how { background: white; padding: 90px 24px; }
+  .how-inner { max-width: 1000px; margin: 0 auto; }
+  .section-eyebrow { text-align: center; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+  .section-title { text-align: center; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: clamp(1.6rem, 3vw, 2.4rem); color: var(--ink); letter-spacing: -0.5px; margin-bottom: 56px; line-height: 1.2; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .step-card { background: var(--off-white); border-radius: 20px; padding: 30px 26px; position: relative; border: 1.5px solid var(--border); transition: transform 0.2s, box-shadow 0.2s; }
+  .step-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(91,141,217,0.12); }
+  .step-num-badge { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.95rem; color: white; margin-bottom: 16px; }
+  .step-card h3 { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem; margin-bottom: 8px; color: var(--ink); }
+  .step-card p { font-size: 0.86rem; color: var(--muted); line-height: 1.6; }
+  .savings { padding: 90px 24px; background: var(--ink); color: white; text-align: center; position: relative; overflow: hidden; }
+  .savings::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(91,141,217,0.15) 0%, transparent 70%); pointer-events: none; }
   .savings .section-eyebrow { color: var(--yellow); }
   .savings .section-title { color: white; }
-
-  .tiers {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-top: 40px;
-  }
-  .tier {
-    background: rgba(255,255,255,0.06);
-    border: 1.5px solid rgba(255,255,255,0.12);
-    border-radius: 16px;
-    padding: 28px 24px;
-    min-width: 160px;
-    transition: transform 0.2s, background 0.2s;
-    cursor: default;
-  }
-  .tier:hover {
-    transform: translateY(-4px);
-    background: rgba(255,255,255,0.1);
-  }
-  .tier.best {
-    border-color: var(--yellow);
-    background: rgba(212,230,0,0.08);
-  }
-  .tier-homes {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #a0aec0;
-    margin-bottom: 10px;
-  }
-  .tier-pct {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 2.4rem;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
+  .tiers { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
+  .tier { background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 28px 24px; min-width: 160px; transition: transform 0.2s, background 0.2s; cursor: default; }
+  .tier:hover { transform: translateY(-4px); background: rgba(255,255,255,0.1); }
+  .tier.best { border-color: var(--yellow); background: rgba(212,230,0,0.08); }
+  .tier-homes { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #a0aec0; margin-bottom: 10px; }
+  .tier-pct { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 2.4rem; line-height: 1; margin-bottom: 6px; }
   .tier.best .tier-pct { color: var(--yellow); }
-  .tier-label {
-    font-size: 0.8rem;
-    color: #a0aec0;
-  }
-  .tier-best-badge {
-    display: inline-block;
-    background: var(--yellow);
-    color: var(--ink);
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 0.65rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 50px;
-    margin-top: 10px;
-  }
-
-  /* ---- EMAIL SIGNUP ---- */
-  .signup {
-    padding: 90px 24px;
-    background: var(--blue-light);
-    text-align: center;
-  }
-  .signup-box {
-    max-width: 520px;
-    margin: 0 auto;
-  }
+  .tier-label { font-size: 0.8rem; color: #a0aec0; }
+  .signup { padding: 90px 24px; background: var(--blue-light); text-align: center; }
+  .signup-box { max-width: 520px; margin: 0 auto; }
   .signup-box .section-eyebrow { color: var(--blue-dark); }
-  .signup-box h2 {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    color: var(--ink);
-    letter-spacing: -0.5px;
-    margin-bottom: 14px;
-    line-height: 1.2;
-  }
-  .signup-box p {
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin-bottom: 28px;
-    line-height: 1.6;
-  }
-  .email-form {
-    display: flex;
-    gap: 10px;
-    max-width: 440px;
-    margin: 0 auto 14px;
-  }
-  .email-form input {
-    flex: 1;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 13px 18px;
-    font-family: 'Nunito Sans', sans-serif;
-    font-size: 0.95rem;
-    background: white;
-    outline: none;
-    transition: border-color 0.2s;
-    color: var(--ink);
-  }
-  .email-form input:focus { border-color: var(--blue); }
-  .email-form button {
-    background: var(--blue);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 13px 22px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 0.9rem;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s;
-  }
-  .email-form button:hover { background: var(--blue-dark); }
-  .zip-form {
-    display: flex;
-    gap: 10px;
-    max-width: 440px;
-    margin: 0 auto;
-  }
-  .zip-form input {
-    width: 130px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 16px;
-    font-family: 'Nunito Sans', sans-serif;
-    font-size: 0.9rem;
-    background: white;
-    outline: none;
-    transition: border-color 0.2s;
-    color: var(--ink);
-    text-align: center;
-    letter-spacing: 0.1em;
-  }
-  .zip-form input:focus { border-color: var(--blue); }
-  .signup-note {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 12px;
-  }
-
-  /* ---- FOOTER ---- */
-  footer {
-    background: var(--ink);
-    color: #6b7a9e;
-    padding: 36px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .signup-box h2 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--ink); letter-spacing: -0.5px; margin-bottom: 14px; line-height: 1.2; }
+  .signup-box p { color: var(--muted); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.6; }
+  .signup-note { font-size: 0.75rem; color: var(--muted); margin-top: 12px; }
+  footer { background: var(--ink); color: #6b7a9e; padding: 36px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { display: flex; align-items: center; gap: 10px; }
   .footer-logo img { width: 30px; height: 30px; object-fit: contain; }
-  .footer-logo span {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 1rem;
-    color: white;
-  }
+  .footer-logo span { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; color: white; }
   .footer-logo span em { color: var(--blue); font-style: normal; }
   footer p { font-size: 0.78rem; }
-  .footer-dots {
-    display: flex;
-    gap: 6px;
-  }
-  .footer-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-  }
-
-  /* ---- SUCCESS STATE ---- */
-  .success-message {
-    display: none;
-    text-align: center;
-    padding: 20px;
-    background: white;
-    border-radius: 16px;
-    border: 2px solid var(--green);
-  }
+  .footer-dots { display: flex; gap: 6px; }
+  .footer-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .success-message { display: none; text-align: center; padding: 20px; background: white; border-radius: 16px; border: 2px solid var(--green); }
   .success-message.show { display: block; }
   .success-message .big-emoji { font-size: 2.5rem; margin-bottom: 10px; }
-  .success-message h3 {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 1.2rem;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
+  .success-message h3 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--ink); margin-bottom: 6px; }
   .success-message p { font-size: 0.85rem; color: var(--muted); }
-
   @media (max-width: 700px) {
     nav { padding: 12px 20px; }
     .nav-links { display: none; }
     .steps { grid-template-columns: 1fr; }
     .tiers { gap: 10px; }
     .tier { min-width: 130px; padding: 22px 16px; }
-    .email-form { flex-direction: column; }
     footer { flex-direction: column; text-align: center; }
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">
     <img src="/Ripple_Logo_Final.png" alt="Community Ripple Logo">
@@ -691,18 +178,10 @@
   </ul>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <!-- Animated ripple rings -->
   <div class="hero-ripples">
-    <div class="r"></div>
-    <div class="r"></div>
-    <div class="r"></div>
-    <div class="r"></div>
-    <div class="r"></div>
+    <div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div><div class="r"></div>
   </div>
-
-  <!-- Floating colored dots (like the logo) -->
   <div class="float-dot" style="width:22px;height:22px;background:#3DAE4A;top:18%;left:12%;animation-delay:0s;opacity:0.7;"></div>
   <div class="float-dot" style="width:14px;height:14px;border:3px solid #F05C5C;top:22%;right:14%;animation-delay:1s;opacity:0.6;"></div>
   <div class="float-dot" style="width:18px;height:18px;background:#D4E600;bottom:28%;right:10%;animation-delay:2s;opacity:0.7;"></div>
@@ -710,53 +189,51 @@
   <div class="float-dot" style="width:10px;height:10px;border:3px solid #3DAE4A;top:60%;left:18%;animation-delay:0.7s;opacity:0.5;"></div>
   <div class="float-dot" style="width:16px;height:16px;border:3px solid #D4E600;top:55%;right:16%;animation-delay:2.5s;opacity:0.5;"></div>
 
-    <div class="hero-eyebrow" id="hero-eyebrow">
-      <span class="dot"></span>
-      <span id="eyebrow-text">Neighbors saving together near you</span>
+  <div class="hero-eyebrow" id="hero-eyebrow">
+    <span class="dot"></span>
+    <span id="eyebrow-text">Neighbors saving together near you</span>
+  </div>
+
+  <h1>Get a group rate on<br>home services with <span class="highlight">your neighbors.</span></h1>
+
+  <p class="hero-sub">
+    Pick a service. We group you with nearby neighbors who need the same thing — one contractor, one trip, everyone saves. We call it a Ripple.
+  </p>
+
+  <div class="search-wrapper">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <select id="service-input" style="flex:1;border:none;background:transparent;font-family:'Nunito Sans',sans-serif;font-size:1rem;color:#1a2540;outline:none;cursor:pointer;padding:0 8px;">
+        <option value="" disabled selected>What service do you need?</option>
+        <option>Driveway Paving/Sealing</option>
+        <option>Dryer Vent Cleaning</option>
+        <option>Gutter Cleaning</option>
+        <option>HVAC Tuneup</option>
+        <option>Lawn Aeration</option>
+        <option>Lawn Fertilization</option>
+        <option>Mobile Car Wash</option>
+        <option>Mosquito Treatment</option>
+        <option>Mulch Delivery</option>
+        <option>Mulch Installation</option>
+        <option>Pest Control</option>
+        <option>Pressure Washing</option>
+        <option>Trash Bin Cleaning</option>
+        <option>Window Cleaning</option>
+      </select>
+      <button class="search-btn" onclick="handleSearch()">Get a Group Rate →</button>
     </div>
+  </div>
 
-    <h1>Get a group rate on<br>home services with <span class="highlight">your neighbors.</span></h1>
-
-    <p class="hero-sub">
-      Pick a service. We group you with nearby neighbors who need the same thing — one contractor, one trip, everyone saves. We call it a Ripple.
-    </p>
-
-    <div class="search-wrapper">
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <select id="service-input" style="flex:1;border:none;background:transparent;font-family:'Nunito Sans',sans-serif;font-size:1rem;color:#1a2540;outline:none;cursor:pointer;padding:0 8px;">
-          <option value="" disabled selected>What service do you need?</option>
-          <option>Driveway Paving/Sealing</option>
-          <option>Dryer Vent Cleaning</option>
-          <option>Gutter Cleaning</option>
-          <option>HVAC Tuneup</option>
-          <option>Lawn Aeration</option>
-          <option>Lawn Fertilization</option>
-          <option>Mobile Car Wash</option>
-          <option>Mosquito Treatment</option>
-          <option>Mulch Delivery</option>
-          <option>Mulch Installation</option>
-          <option>Pest Control</option>
-          <option>Pressure Washing</option>
-          <option>Trash Bin Cleaning</option>
-          <option>Window Cleaning</option>
-        </select>
-        <button class="search-btn" onclick="handleSearch()">Get a Group Rate →</button>
-      </div>
-    </div>
-
-    <div class="search-hints">
-      <span class="hint-chip" onclick="fillSearch('Gutter cleaning')">🍂 Gutter cleaning</span>
-      <span class="hint-chip" onclick="fillSearch('Lawn aeration')">🌿 Lawn aeration</span>
-      <span class="hint-chip" onclick="fillSearch('Pressure washing')">💧 Pressure washing</span>
-      <span class="hint-chip" onclick="fillSearch('Mulch delivery')">🌱 Mulch delivery</span>
-      <span class="hint-chip" onclick="fillSearch('Mosquito treatment')">🦟 Mosquito treatment</span>
-      <span class="hint-chip" onclick="fillSearch('Driveway sealing')">🏠 Driveway sealing</span>
-    </div>
+  <div class="search-hints">
+    <span class="hint-chip" onclick="fillSearch('Gutter cleaning')">🍂 Gutter cleaning</span>
+    <span class="hint-chip" onclick="fillSearch('Lawn aeration')">🌿 Lawn aeration</span>
+    <span class="hint-chip" onclick="fillSearch('Pressure washing')">💧 Pressure washing</span>
+    <span class="hint-chip" onclick="fillSearch('Mulch delivery')">🌱 Mulch delivery</span>
+    <span class="hint-chip" onclick="fillSearch('Mosquito treatment')">🦟 Mosquito treatment</span>
+    <span class="hint-chip" onclick="fillSearch('Driveway sealing')">🏠 Driveway sealing</span>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="how" id="how">
   <div class="how-inner">
     <div class="section-eyebrow">Simple as 1-2-3</div>
@@ -781,7 +258,6 @@
   </div>
 </section>
 
-<!-- SAVINGS -->
 <section class="savings" id="savings">
   <div class="section-eyebrow">The more, the merrier</div>
   <div class="section-title">Savings grow as your Ripple spreads</div>
@@ -815,7 +291,6 @@
   <p style="font-size:0.78rem;color:#6b7a9e;text-align:center;max-width:520px;margin:20px auto 0;line-height:1.6;">* Savings vary by contractor and service type. Discounts shown are examples. Your contractor will share the exact deal when your Ripple fills — we guarantee it's always the best group rate available.</p>
 </section>
 
-<!-- EMAIL SIGNUP -->
 <section class="signup" id="signup">
   <div class="signup-box">
     <div class="section-eyebrow">Start saving today</div>
@@ -849,11 +324,9 @@
         </div>
       </div>
     </div>
- 
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo">
     <img src="/Ripple_Logo_Final.png" alt="Logo">
@@ -869,7 +342,6 @@
   </div>
 </footer>
 
-<!-- RIPPLE TOAST NOTIFICATION -->
 <div class="ripple-toast" id="toast">
   <div class="toast-icon">🌊</div>
   <div class="toast-text">
@@ -879,6 +351,7 @@
   <button class="toast-join" onclick="dismissToast()">Join →</button>
 </div>
 
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6LcaY5AsAAAAALeWq5amWfRz6cDL75RYTtKrdv7S" async defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiN1tOJuN8stsCU1YirTSvh6uKyxOHIAM&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
   // Door tag QR detection
@@ -892,7 +365,6 @@
     setTimeout(() => document.getElementById('signup').scrollIntoView({ behavior: 'smooth' }), 800);
   }
 
-  // Initialize Google Places Autocomplete
   function initAutocomplete() {
     const input = document.getElementById('address-input');
     if (!input) return;
@@ -902,12 +374,10 @@
     });
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
-      if (place.formatted_address) {
-        input.value = place.formatted_address;
-      }
+      if (place.formatted_address) input.value = place.formatted_address;
     });
   }
-  // Hint chips
+
   function fillSearch(val) {
     const select = document.getElementById('service-input');
     for (let i = 0; i < select.options.length; i++) {
@@ -918,23 +388,17 @@
     }
   }
 
-  // Search handler
   function handleSearch() {
     const val = document.getElementById('service-input').value.trim();
-    if (!val) {
-      document.getElementById('service-input').focus();
-      return;
-    }
+    if (!val) { document.getElementById('service-input').focus(); return; }
     document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
     setTimeout(() => document.getElementById('email-input').focus(), 600);
   }
 
-  // Enter key on search
   document.getElementById('service-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') handleSearch();
   });
 
-  // Signup handler — connected to Brevo + Supabase
   async function handleSignup() {
     const email = document.getElementById('email-input').value.trim();
     const address = document.getElementById('address-input').value.trim();
@@ -948,15 +412,23 @@
     btn.disabled = true;
 
     try {
+      // reCAPTCHA v3 token
+      const token = await new Promise((resolve) => {
+        grecaptcha.enterprise.ready(async () => {
+          const t = await grecaptcha.enterprise.execute('6LcaY5AsAAAAALeWq5amWfRz6cDL75RYTtKrdv7S', { action: 'SIGNUP' });
+          resolve(t);
+        });
+      });
+
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, address, service })
+        body: JSON.stringify({ email, address, service, recaptcha_token: token })
       });
 
       const data = await response.json();
 
-    if (response.ok && data.success) {
+      if (response.ok && data.success) {
         document.getElementById('signup-form-wrap').style.display = 'none';
         document.getElementById('success-msg').classList.add('show');
         if (data.ripple_id) {
@@ -977,18 +449,16 @@
       showFormError('Oops — ' + err.message + ' Please try again.');
     }
   }
-  
-function copyRippleLink() {
+
+  function copyRippleLink() {
     const text = document.getElementById('ripple-link-text').textContent;
     navigator.clipboard.writeText(text).then(() => {
       const btn = event.target;
       btn.textContent = 'Copied!';
       setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-    }).catch(() => {
-      prompt('Copy this link:', text);
-    });
+    }).catch(() => { prompt('Copy this link:', text); });
   }
-  
+
   function showFormError(msg) {
     let el = document.getElementById('form-error');
     if (!el) {
@@ -1000,7 +470,6 @@ function copyRippleLink() {
     el.textContent = msg;
   }
 
-  // Demo toast notifications
   const toasts = [
     "Maria started a Ripple for lawn aeration on Maple St.",
     "3 neighbors joined a pressure washing Ripple — 10% off unlocked!",
@@ -1022,7 +491,6 @@ function copyRippleLink() {
     document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // Show toasts periodically
   setTimeout(showToast, 3000);
   setInterval(showToast, 9000);
 </script>
