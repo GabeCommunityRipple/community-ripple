@@ -1,4 +1,5 @@
 const { sendRippleAlert } = require('./sendRippleAlert.js');
+const { sendRippleConfirmation } = require('./sendRippleConfirmation.js');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -155,7 +156,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (service && rippleId) {
-      await sendRippleAlert({
+      await sendRippleConfirmation({
         toEmail: email,
         serviceType: service,
         rippleUrl: `https://communityripple.com/ripple/${rippleId}`
