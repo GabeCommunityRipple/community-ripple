@@ -111,6 +111,16 @@ module.exports = async function handler(req, res) {
           body: JSON.stringify({ member_count: matchedRipple.member_count + 1 })
         });
 
+        try {
+          await sendRippleConfirmation({
+            toEmail: email,
+            serviceType: service,
+            rippleUrl: `https://communityripple.com/ripple/${matchedRipple.id}`
+          });
+        } catch (confirmErr) {
+          console.error('Confirmation email error:', confirmErr.message);
+        }
+
       } else {
         const newRippleRes = await fetch(`${supabaseUrl}/rest/v1/ripples`, {
           method: 'POST',
