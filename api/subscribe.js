@@ -148,6 +148,7 @@ module.exports = async function handler(req, res) {
               serviceType: service,
               rippleUrl: `https://communityripple.com/ripple/${newRipple.id}`
             });
+            await sleep(200);
           }
         }
       }
@@ -156,11 +157,15 @@ module.exports = async function handler(req, res) {
     }
 
     if (service && rippleId) {
-      await sendRippleConfirmation({
-        toEmail: email,
-        serviceType: service,
-        rippleUrl: `https://communityripple.com/ripple/${rippleId}`
-      });
+      try {
+        await sendRippleConfirmation({
+          toEmail: email,
+          serviceType: service,
+          rippleUrl: `https://communityripple.com/ripple/${rippleId}`
+        });
+      } catch (confirmErr) {
+        console.error('Confirmation email error:', confirmErr.message);
+      }
     }
 
     return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress, ripple_id: rippleId });
@@ -170,6 +175,8 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: err.message });
   }
 }
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function haversine(lat1, lng1, lat2, lng2) {
   const R = 3958.8;
