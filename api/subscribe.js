@@ -1,3 +1,5 @@
+import { sendRippleAlert } from './sendRippleAlert.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -8,13 +10,11 @@ export default async function handler(req, res) {
   if (!email) return res.status(400).json({ error: 'Email is required.' });
   if (!address) return res.status(400).json({ error: 'Address is required.' });
 
-  const brevoKey = process.env.BREVO_API_KEY;
   const googleKey = process.env.GOOGLE_MAPS_API_KEY;
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_ANON_KEY;
   const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
 
-  if (!brevoKey) return res.status(500).json({ error: 'Brevo API key not configured.' });
   if (!googleKey) return res.status(500).json({ error: 'Google Maps API key not configured.' });
 
   try {
@@ -48,30 +48,7 @@ export default async function handler(req, res) {
     const zipComponent = geoData.results[0].address_components.find(c => c.types.includes('postal_code'));
     const zip = zipComponent?.short_name || '';
 
-    // 3. Save to Brevo
-    const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'api-key': brevoKey },
-      body: JSON.stringify({
-        email,
-        listIds: [2],
-        updateEnabled: true,
-        attributes: {
-          ZIP_CODE: zip,
-          SERVICE_INTEREST: service || 'Not specified',
-          ADDRESS: formattedAddress,
-          LAT: lat.toString(),
-          LNG: lng.toString()
-        }
-      })
-    });
-
-    if (brevoRes.status !== 201 && brevoRes.status !== 204) {
-      const brevoData = await brevoRes.json();
-      throw new Error(brevoData.message || 'Brevo error');
-    }
-
-    // 4. Save to Supabase
+    // 3. Save to Supabase
     await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
       method: 'POST',
       headers: {
@@ -165,18 +142,10 @@ export default async function handler(req, res) {
           }) : [];
 
           for (const sub of nearby) {
-            await fetch('https://api.brevo.com/v3/smtp/email', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'api-key': brevoKey },
-              body: JSON.stringify({
-                to: [{ email: sub.email }],
-                templateId: 1,
-                params: {
-                  first_name: email.split('@')[0],
-                  service_type: service,
-                  ripple_url: `https://communityripple.com/ripple/${newRipple.id}`
-                }
-              })
+            await sendRippleAlert({
+              toEmail: sub.email,
+              serviceType: service,
+              rippleUrl: `https://communityripple.com/ripple/${newRipple.id}`
             });
           }
         }

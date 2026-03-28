@@ -9,7 +9,6 @@ export default async function handler(req, res) {
   if (!address) return res.status(400).json({ error: 'Address is required.' });
   if (!ripple_id) return res.status(400).json({ error: 'Ripple ID is required.' });
 
-  const brevoKey = process.env.BREVO_API_KEY;
   const googleKey = process.env.GOOGLE_MAPS_API_KEY;
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_ANON_KEY;
@@ -50,25 +49,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: `Your address is ${dist.toFixed(1)} miles from this Ripple. You must be within ${radiusMiles} miles to join.` });
     }
 
-    // 4. Save to Brevo
-    await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'api-key': brevoKey },
-      body: JSON.stringify({
-        email,
-        listIds: [2],
-        updateEnabled: true,
-        attributes: {
-          ZIP_CODE: zip,
-          SERVICE_INTEREST: ripple.service_type || 'Not specified',
-          ADDRESS: formattedAddress,
-          LAT: lat.toString(),
-          LNG: lng.toString()
-        }
-      })
-    });
-
-    // 5. Upsert subscriber in Supabase
+    // 4. Upsert subscriber in Supabase
     await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
       method: 'POST',
       headers: {
