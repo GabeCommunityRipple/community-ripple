@@ -111,6 +111,7 @@ module.exports = async function handler(req, res) {
           body: JSON.stringify({ member_count: matchedRipple.member_count + 1 })
         });
 
+        console.log('Sending confirmation (matched ripple) to:', email, 'rippleId:', matchedRipple.id);
         try {
           await sendRippleConfirmation({
             toEmail: email,
@@ -118,7 +119,7 @@ module.exports = async function handler(req, res) {
             rippleUrl: `https://communityripple.com/ripple/${matchedRipple.id}`
           });
         } catch (confirmErr) {
-          console.error('Confirmation email error:', confirmErr.message);
+          console.error('Confirmation failed:', confirmErr.message, confirmErr.stack);
         }
 
       } else {
@@ -167,6 +168,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (service && rippleId) {
+      console.log('Sending confirmation (new ripple) to:', email, 'rippleId:', rippleId);
       try {
         await sendRippleConfirmation({
           toEmail: email,
@@ -174,7 +176,7 @@ module.exports = async function handler(req, res) {
           rippleUrl: `https://communityripple.com/ripple/${rippleId}`
         });
       } catch (confirmErr) {
-        console.error('Confirmation email error:', confirmErr.message);
+        console.error('Confirmation failed:', confirmErr.message, confirmErr.stack);
       }
     }
 
