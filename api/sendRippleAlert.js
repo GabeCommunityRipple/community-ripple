@@ -1,4 +1,4 @@
-export async function sendRippleAlert({ toEmail, serviceType, rippleUrl }) {
+async function sendRippleAlert({ toEmail, serviceType, rippleUrl }) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) throw new Error('Resend API key not configured.');
 
@@ -121,3 +121,5 @@ export async function sendRippleAlert({ toEmail, serviceType, rippleUrl }) {
 
   return res.json();
 }
+
+module.exports = { sendRippleAlert };

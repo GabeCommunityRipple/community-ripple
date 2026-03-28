@@ -1,4 +1,4 @@
-import { sendRippleAlert } from './sendRippleAlert.js';
+const { sendRippleAlert } = require('./sendRippleAlert.js');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

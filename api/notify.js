@@ -2,7 +2,7 @@
 // Called after a new Ripple is created
 // Finds all nearby subscribers and sends them the Ripple Alert email
 
-import { sendRippleAlert } from './sendRippleAlert.js';
+const { sendRippleAlert } = require('./sendRippleAlert.js');
 
 function distanceMiles(lat1, lng1, lat2, lng2) {
   const R = 3958.8;
