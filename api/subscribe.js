@@ -1,20 +1,35 @@
 const { sendRippleAlert } = require('./sendRippleAlert.js');
 const { sendRippleConfirmation } = require('./sendRippleConfirmation.js');
 
+// Known spam / disposable email domains — add to this list as needed.
+const BLOCKED_EMAIL_DOMAINS = [
+  'businessmailsystem.com',
+  'mailinator.com',
+  'guerrillamail.com',
+  'tempmail.com',
+  'throwaway.email',
+  'sharklasers.com',
+  'guerrillamailblock.com',
+  'grr.la',
+  'spam4.me'
+];
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { email, address, service, recaptcha_token } = req.body;
+  const turnstileToken = req.body['cf-turnstile-response'];
 
   if (!email) return res.status(400).json({ error: 'Email is required.' });
   if (!address) return res.status(400).json({ error: 'Address is required.' });
 
   const googleKey = process.env.GOOGLE_MAPS_API_KEY;
   const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
 
   if (!googleKey) return res.status(500).json({ error: 'Google Maps API key not configured.' });
 
@@ -34,6 +49,27 @@ module.exports = async function handler(req, res) {
       if (score < 0.5) {
         return res.status(400).json({ error: 'Spam detected. Please try again.' });
       }
+    }
+
+    // 1b. Verify Cloudflare Turnstile token
+    if (turnstileSecret) {
+      const turnstileRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${encodeURIComponent(turnstileSecret)}&response=${encodeURIComponent(turnstileToken || '')}`
+      });
+      const turnstileData = await turnstileRes.json();
+      if (!turnstileData.success) {
+        console.log('Turnstile verification failed:', turnstileData['error-codes']);
+        return res.status(400).json({ error: 'Bot detected.' });
+      }
+    }
+
+    // 1c. Reject known spam / disposable email domains
+    const emailDomain = email.split('@')[1]?.toLowerCase().trim();
+    if (emailDomain && BLOCKED_EMAIL_DOMAINS.includes(emailDomain)) {
+      console.log('Blocked spam domain:', emailDomain);
+      return res.status(400).json({ error: 'Invalid email address.' });
     }
 
     // 2. Convert address to lat/lng

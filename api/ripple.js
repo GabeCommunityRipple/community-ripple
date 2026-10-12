@@ -1,7 +1,7 @@
 // ripple.js v4 — creates or joins a ripple, then triggers neighbor notifications
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 async function db(table, options = {}) {
   const { method = 'GET', filter = '', body = null, prefer = '' } = options;

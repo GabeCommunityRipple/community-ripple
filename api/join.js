@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   const googleKey = process.env.GOOGLE_MAPS_API_KEY;
   const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   try {
     // 1. Geocode the address

@@ -665,6 +665,8 @@
     footer { flex-direction: column; text-align: center; }
   }
 </style>
+<!-- Cloudflare Turnstile (invisible bot protection) -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -822,6 +824,8 @@
         <input type="email" id="email-input" placeholder="your@email.com" style="width:100%;border:2px solid #dde6f7;border-radius:12px;padding:13px 18px;font-family:'Nunito Sans',sans-serif;font-size:0.95rem;background:white;outline:none;color:#1a2540;margin-bottom:10px;">
         <input type="text" id="address-input" placeholder="Your home address (e.g. 123 Main St, Apex, NC 27502)" style="width:100%;border:2px solid #dde6f7;border-radius:12px;padding:13px 18px;font-family:'Nunito Sans',sans-serif;font-size:0.95rem;background:white;outline:none;color:#1a2540;">
       </div>
+      <!-- Cloudflare Turnstile widget (invisible; stays hidden unless a challenge is required) -->
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADusE8YEi4s0rl_f" data-appearance="interaction-only" style="max-width:440px;margin:10px auto 0;"></div>
       <div style="max-width:440px;margin:10px auto 0;">
         <button id="signup-btn" onclick="handleSignup()" style="width:100%;background:#5B8DD9;color:white;border:none;border-radius:12px;padding:13px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;transition:background 0.2s;">Start My Ripple →</button>
       </div>
@@ -942,11 +946,14 @@
     btn.textContent = 'Starting your Ripple…';
     btn.disabled = true;
 
+    let turnstileToken = '';
+    try { if (window.turnstile) turnstileToken = turnstile.getResponse(); } catch (e) {}
+
     try {
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, address, service })
+        body: JSON.stringify({ email, address, service, 'cf-turnstile-response': turnstileToken })
       });
 
       const data = await response.json();
@@ -969,6 +976,7 @@
     } catch (err) {
       btn.textContent = 'Start My Ripple →';
       btn.disabled = false;
+      try { if (window.turnstile) turnstile.reset(); } catch (e) {}
       showFormError('Oops — ' + err.message + ' Please try again.');
     }
   }
