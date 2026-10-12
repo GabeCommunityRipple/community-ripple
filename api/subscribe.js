@@ -147,16 +147,7 @@ module.exports = async function handler(req, res) {
           body: JSON.stringify({ member_count: matchedRipple.member_count + 1 })
         });
 
-        console.log('Sending confirmation (matched ripple) to:', email, 'rippleId:', matchedRipple.id);
-        try {
-          await sendRippleConfirmation({
-            toEmail: email,
-            serviceType: service,
-            rippleUrl: `https://communityripple.com/ripple/${matchedRipple.id}`
-          });
-        } catch (confirmErr) {
-          console.error('Confirmation failed:', confirmErr.message, confirmErr.stack);
-        }
+        await trySendConfirmation({ email, service, rippleId: matchedRipple.id, path: 'joined ripple' });
 
       } else {
         const newRippleRes = await fetch(`${supabaseUrl}/rest/v1/ripples`, {
@@ -180,6 +171,9 @@ module.exports = async function handler(req, res) {
             body: JSON.stringify({ ripple_id: newRipple.id, subscriber_id: subscriber.id })
           });
 
+          // Confirm to the creator first so a failed neighbor alert can't prevent it
+          await trySendConfirmation({ email, service, rippleId: newRipple.id, path: 'new ripple' });
+
           const allSubsRes = await fetch(`${supabaseUrl}/rest/v1/subscribers?select=*`, {
             headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
           });
@@ -190,30 +184,21 @@ module.exports = async function handler(req, res) {
           }) : [];
 
           for (const sub of nearby) {
-            await sendRippleAlert({
-              toEmail: sub.email,
-              serviceType: service,
-              rippleUrl: `https://communityripple.com/ripple/${newRipple.id}`
-            });
+            try {
+              await sendRippleAlert({
+                toEmail: sub.email,
+                serviceType: service,
+                rippleUrl: `https://communityripple.com/ripple/${newRipple.id}`
+              });
+            } catch (alertErr) {
+              console.error('Neighbor alert failed for', sub.email, '-', alertErr.message);
+            }
             await sleep(200);
           }
         }
       }
     } else {
       console.log('Skipping ripple — service:', service, 'subscriber id:', subscriber?.id);
-    }
-
-    if (service && rippleId) {
-      console.log('Sending confirmation (new ripple) to:', email, 'rippleId:', rippleId);
-      try {
-        await sendRippleConfirmation({
-          toEmail: email,
-          serviceType: service,
-          rippleUrl: `https://communityripple.com/ripple/${rippleId}`
-        });
-      } catch (confirmErr) {
-        console.error('Confirmation failed:', confirmErr.message, confirmErr.stack);
-      }
     }
 
     return res.status(200).json({ success: true, lat, lng, formatted_address: formattedAddress, ripple_id: rippleId });
@@ -225,6 +210,24 @@ module.exports = async function handler(req, res) {
 }
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// Sends the creator/joiner confirmation; logs but never throws so signup still succeeds
+async function trySendConfirmation({ email, service, rippleId, path }) {
+  console.log(`Sending confirmation (${path}) to:`, email, 'rippleId:', rippleId);
+  try {
+    const result = await sendRippleConfirmation({
+      toEmail: email,
+      serviceType: service,
+      rippleUrl: `https://communityripple.com/ripple/${rippleId}`
+    });
+    console.log('Confirmation sent — Resend id:', result?.id);
+  } catch (confirmErr) {
+    console.error('Confirmation failed:', confirmErr.message,
+      '| Resend status:', confirmErr.status,
+      '| Resend response:', confirmErr.response,
+      '\n', confirmErr.stack);
+  }
+}
 
 function haversine(lat1, lng1, lat2, lng2) {
   const R = 3958.8;

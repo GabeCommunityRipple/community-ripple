@@ -125,8 +125,14 @@ async function sendRippleConfirmation({ toEmail, serviceType, rippleUrl }) {
   });
 
   if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data?.message || `Resend error: ${res.status}`);
+    // Read as text so a non-JSON error body is still captured in the logs
+    const raw = await res.text();
+    let data = null;
+    try { data = JSON.parse(raw); } catch (e) {}
+    const err = new Error(data?.message || `Resend error: ${res.status}`);
+    err.status = res.status;
+    err.response = raw;
+    throw err;
   }
 
   return res.json();
