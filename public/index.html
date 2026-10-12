@@ -825,7 +825,7 @@
         <input type="text" id="address-input" placeholder="Your home address (e.g. 123 Main St, Apex, NC 27502)" style="width:100%;border:2px solid #dde6f7;border-radius:12px;padding:13px 18px;font-family:'Nunito Sans',sans-serif;font-size:0.95rem;background:white;outline:none;color:#1a2540;">
       </div>
       <!-- Cloudflare Turnstile widget (invisible; stays hidden unless a challenge is required) -->
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAADusE8YEi4s0rl_f" data-appearance="interaction-only" style="max-width:440px;margin:10px auto 0;"></div>
+      <div class="cf-turnstile" id="turnstile-widget" data-sitekey="0x4AAAAAADusE8YEi4s0rl_f" data-appearance="interaction-only" data-execution="execute" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError" style="max-width:440px;margin:10px auto 0;"></div>
       <div style="max-width:440px;margin:10px auto 0;">
         <button id="signup-btn" onclick="handleSignup()" style="width:100%;background:#5B8DD9;color:white;border:none;border-radius:12px;padding:13px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;transition:background 0.2s;">Start My Ripple →</button>
       </div>
@@ -946,8 +946,16 @@
     btn.textContent = 'Starting your Ripple…';
     btn.disabled = true;
 
-    let turnstileToken = '';
-    try { if (window.turnstile) turnstileToken = turnstile.getResponse(); } catch (e) {}
+    let turnstileToken;
+    try {
+      turnstileToken = await getTurnstileToken();
+    } catch (err) {
+      btn.textContent = 'Start My Ripple →';
+      btn.disabled = false;
+      try { if (window.turnstile) turnstile.reset('#turnstile-widget'); } catch (e) {}
+      showFormError(err.message);
+      return;
+    }
 
     try {
       const response = await fetch('/api/subscribe', {
@@ -976,9 +984,50 @@
     } catch (err) {
       btn.textContent = 'Start My Ripple →';
       btn.disabled = false;
-      try { if (window.turnstile) turnstile.reset(); } catch (e) {}
+      try { if (window.turnstile) turnstile.reset('#turnstile-widget'); } catch (e) {}
       showFormError('Oops — ' + err.message + ' Please try again.');
     }
+  }
+
+  // Cloudflare Turnstile: the widget runs only when execute() is called, and hands
+  // its token to onTurnstileSuccess. getTurnstileToken() wraps that in a promise.
+  let turnstilePending = null;
+
+  function onTurnstileSuccess(token) {
+    if (turnstilePending) { turnstilePending.resolve(token); turnstilePending = null; }
+  }
+
+  function onTurnstileError(code) {
+    console.error('Turnstile error:', code);
+    if (turnstilePending) {
+      turnstilePending.reject(new Error('We couldn’t verify you’re human. Please refresh the page and try again.'));
+      turnstilePending = null;
+    }
+    return true; // tell Turnstile the error was handled
+  }
+
+  function getTurnstileToken() {
+    return new Promise((resolve, reject) => {
+      if (!window.turnstile) {
+        reject(new Error('Our security check hasn’t loaded yet. Please wait a moment and try again — if this keeps happening, turn off ad or script blockers and refresh the page.'));
+        return;
+      }
+      const timer = setTimeout(() => {
+        turnstilePending = null;
+        reject(new Error('The security check timed out. Please refresh the page and try again.'));
+      }, 60000);
+      turnstilePending = {
+        resolve: token => { clearTimeout(timer); resolve(token); },
+        reject: err => { clearTimeout(timer); reject(err); }
+      };
+      try {
+        turnstile.execute('#turnstile-widget');
+      } catch (e) {
+        console.error('Turnstile execute failed:', e);
+        turnstilePending.reject(new Error('Our security check failed to start. Please refresh the page and try again.'));
+        turnstilePending = null;
+      }
+    });
   }
 
   function copyRippleLink() {
